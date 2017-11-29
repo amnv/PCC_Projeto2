@@ -1,0 +1,14 @@
+#ifndef MANAGER
+#define MANAGER
+
+#include <string>
+
+using namespace std;
+
+class Manager {
+public:
+    Manager(string file, string mode, string indexType, string pattern, string patternFile, bool count);
+
+};
+
+#endif
