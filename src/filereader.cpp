@@ -70,3 +70,10 @@ void FileReader::setFile(string path) {
     // }
 
 }
+
+bool FileReader::exist(string fileName) {
+    ifstream infile(fileName);
+    bool r = infile.good();
+    infile.close();
+    return r;
+}

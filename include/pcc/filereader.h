@@ -26,4 +26,6 @@ public:
 
     void setFile(std::string path);
 
+    static bool exist(std::string file);
+
 };

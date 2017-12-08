@@ -7,9 +7,9 @@ class Compress {
 
 public:
 
-    void create(std::string file, std::string& text);
+    static void create(std::string file, std::string& text);
 
-    std::string extract(std::string file);
+    static std::string extract(std::string file);
 
 
 };

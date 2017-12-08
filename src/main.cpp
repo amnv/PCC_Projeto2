@@ -1,6 +1,7 @@
 #include <iostream>
 #include <getopt.h>
 #include <pcc/manager.h>
+#include <pcc/filereader.h>
 
 using namespace std;
 
@@ -76,27 +77,38 @@ int main(int argc, char* argv[]) {
     if (help) {
         cout << 
         "USO: " << argv[0] << " index [OPCOES] ARQUIVO\n     " << argv[0] << " search [OPCOES] {PADRAO|-p FILE} ARQUIVO\n\n\
-OPCOES (index):\n\
-  -i, --indextype {tree|array} \t Escolha do algoritmo de indexacao.\n\
+OPCOES:\n\
   -h, --help \t\t\t Mostra esse help.\n\n\
-OPCOES (search):\n\
+index\n\
+  -i, --indextype {tree|array} \t Escolha do algoritmo de indexacao.\n\n\
+search\n\
   -p, --pattern FILE \t\t Le os padroes de um arquivo.\n\
   -c, --count \t\t\t Modo de contagem de ocorrencias.\n\
-  -h, --help \t\t\t Mostra esse help.\n\
-";
+\n";
 
         return 0;
     }
 
     if (mode != "index" && mode != "search") {
-        cout << "Modo invalido. Tente index ou search." << endl;
+        cerr << "Modo invalido. Tente index ou search." << endl;
         return 1;
     }
 
-    if (file.empty()) {
-        cout << "Falta arquivo." << endl;
+    if (!indexType.empty() && indexType != "array" && indexType != "tree") {
+        cerr << "O indextype deve ser: tree ou array." << endl;
         return 1;
     }
+    
+    if (!patternFile.empty() && !FileReader::exist(patternFile)) {
+        cerr << "Arquivo " << patternFile << " nao foi encontrado ou nao pode ser acessado." << endl;
+        return 1;
+    }
+    
+    if (file.empty() || !FileReader::exist(file)) {
+        cerr << "Falta arquivo ou ele nao foi encontrado." << endl;
+        return 1;
+    }
+
 
     if (mode == "index") {
         indexer(file, indexType);
