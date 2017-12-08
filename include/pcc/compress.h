@@ -2,18 +2,14 @@
 #define COMPRESS
 
 #include <string>
-#include <pcc/filewriter.h>
 
 class Compress {
-private:
-    FileWriter* w;
 
 public:
-    Compress(std::string file);
 
-    void compress(std::string&);
+    void create(std::string file, std::string& text);
 
-    std::string extract(std::string);
+    std::string extract(std::string file);
 
 
 };

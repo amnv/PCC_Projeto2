@@ -1,18 +1,26 @@
 #include <string>
 #include <fstream>
 
-class Reader {
+class FileReader {
 private:
     std::ifstream file;
     std::string path;
 
 public:
 
-    Reader(std::string path);
+    FileReader(std::string path);
 
-    ~Reader();
+    ~FileReader();
+
+    bool eof();
+
+    char peek();
 
     bool getLine(std::string& line);
+
+    char getChar();
+
+    int getInt();
 
     void reloadFile();
 
