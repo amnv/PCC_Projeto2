@@ -6,6 +6,8 @@
 
 using namespace std;
 
+#define c_esp 27
+
 void Compress::create(string file, string& text) {
     FileWriter* w = new FileWriter(file, false);
     //
@@ -25,8 +27,8 @@ void Compress::create(string file, string& text) {
             D.insert(pair<string,int>(temp+c, D.size()));
             w->write(to_string(D[temp]));
             if (c >= '0' && c <= '9') {
-                char esp = 8;
-                w-> write(esp + string(1, c) + esp); //cerco numeros por caracter especial
+                char esp = c_esp;
+                w-> write(string(1, esp) + string(1, esp) + string(1, c)); //marca numeros com caracter especial
             } else {
                 w->write(string(1, c));
             }
@@ -43,24 +45,16 @@ string Compress::extract(string file) {
     map<int, string> D;
     D.insert(pair<int, string>(0, ""));
     string s;
-    int seq;
-    bool ja_seq = false;
     while (!r->eof()) {
-        if (!ja_seq) {
-            seq = r->getInt();
-        }
-        ja_seq = false; //diz q nao carregou seq
+
+        int seq = r->getInt();
         char c = r->getChar();
-        char esp = 8;
+        char esp = c_esp;
         if (c == esp) { //se for o caracter especial
-            char temp = r->getChar();
-            char d = r->peek();
-            if (d == esp) { //cercando o numero, ele eh ignorado
-                c = temp; //pegando char numerico real
-                r->getChar(); //removendo caracter sinalizador
-            } else {
-                seq = temp - '0'; //transformando em valor int real
-                ja_seq = true; //ja pegou o valor e nao precisa pegar na proxima
+            char temp = r->peek(); //ve o proximo
+            if (temp == esp) { //eh o numero que entra como caracter o proximo
+                r->getChar(); //removendo caracter especial
+                c = r->getChar(); //pegando numero char real
             }
         }
         string t = D[seq] + c;
