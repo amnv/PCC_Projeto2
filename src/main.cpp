@@ -1,11 +1,11 @@
 #include <iostream>
 #include <getopt.h>
-#include <pcc/manager>
+#include <pcc/manager.h>
 
 using namespace std;
 
 int readParameters(int argc, char* argv[], string& mode, string& pattern, string& file, bool& help, bool& count, string& patternFile, string& index) {
-
+    /** Coloca os parametros nos locais corretos */
     struct option extendedOptions[] = {
         {"pattern", required_argument, 0, 'p'},
         {"count", no_argument, 0, 'c'},
@@ -43,6 +43,7 @@ int readParameters(int argc, char* argv[], string& mode, string& pattern, string
 }
 
 void debugParams(string mode, string pattern, string file, bool help, bool count, string patternFile, string index) { 
+    /** apenas para debug, mostra valores de alguns parametros */
     if (!mode.empty())
         cout << "Mode: " << mode << endl;
     
@@ -97,7 +98,11 @@ OPCOES (search):\n\
         return 1;
     }
 
-    Manager m (file, mode, indexType, pattern, patternFile, count);
-    
+    if (mode == "index") {
+        indexer(file, indexType);
+    } else { //jah passou pela verificacao anterior
+        searcher(file, pattern, patternFile, count);
+    }
+
     return 0;
 }

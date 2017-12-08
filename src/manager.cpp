@@ -1,15 +1,17 @@
-#include <pcc/manager>
+#include <pcc/manager.h>
 #include <iostream>
+#include <pcc/compress.h>
 
 using namespace std;
 
-Manager::Manager(string file, string mode, string indexType, string pattern, string patternFile, bool count) {
-    cout << file << mode << indexType << pattern << patternFile << count;
-    if (mode == "index") {
-        // Indexer i(file, indexType);
+void indexer(string file, string indexType) {
+    cout << "Modo de indexação " << endl;
+    Compress c(file + ".idx");
+    string text = "A_ASA_DA_CASA";
+    c.compress(text);
+}
 
-    } else {
-        // Searcher s(file, pattern, patternFile, count);
+void searcher(string file, string pattern, string patterFile, bool count) {
+    cout << "Modo de busca " << endl;
 
-    }
 }
