@@ -4,6 +4,8 @@
 
 using namespace std;
 
+auto print = [](auto m){ cout << m << endl;};
+
 void indexer(string file, string indexType) {
     // cout << "Modo de indexação " << endl;
     if (indexType == "array") {
@@ -15,6 +17,8 @@ void indexer(string file, string indexType) {
     string all = "A_ASA_DA_CASA";
     //saida do algoritmo eh entao toda serializada e eh passada para o metodo compress
     Compress::create(file + ".idx", all);
+    // int** o = build_dfa("ABABAC"); //aqui apenas para test
+    // print(o['B'][5]);
 }
 
 void searcher(string file, string pattern, string patterFile, bool count) {
