@@ -1,3 +1,5 @@
+#ifndef FILEWRITER
+#define FILEWRITER
 
 #include <string>
 #include <fstream>
@@ -20,3 +22,4 @@ public:
 
     void setFile(std::string path, bool append);
 };
+#endif

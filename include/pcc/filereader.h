@@ -1,3 +1,6 @@
+#ifndef FILEREADER
+#define FILEREADER
+
 #include <string>
 #include <fstream>
 
@@ -29,3 +32,4 @@ public:
     static bool exist(std::string file);
 
 };
+#endif
