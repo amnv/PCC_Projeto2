@@ -17,11 +17,11 @@ public:
 
     bool eof();
 
-    char peek();
+    bool peek(char&);
 
     bool getLine(std::string& line);
 
-    char getChar();
+    bool getChar(char&);
 
     int getInt();
 

@@ -1,13 +1,22 @@
 #include <pcc/manager.h>
 #include <iostream>
 #include <pcc/compress.h>
+#include <regex>
 
 using namespace std;
 
-auto print = [](auto m){ cout << m << endl;};
+auto exp = [](string ex, string& str) {
+    regex rgx(ex);
+    smatch match;
+    if (regex_search(str, match, rgx)) {
+        str = match[1];
+        return true;
+    }
+    return false;
+};
 
-void indexer(string file, string indexType) {
-    // cout << "Modo de indexação " << endl;
+void indexer(string file, string indexType, string compressType) {
+
     if (indexType == "array") {
         //chama o array suffix
     } else { //ja passou pela verificacao no main (array | suffix)
@@ -15,10 +24,11 @@ void indexer(string file, string indexType) {
     }
 
     string all = "A_ASA_DA_CASA";
-    //saida do algoritmo eh entao toda serializada e eh passada para o metodo compress
-    Compress::create(file + ".idx", all);
-    // int** o = build_dfa("ABABAC"); //aqui apenas para test
-    // print(o['B'][5]);
+
+    
+    //saida do algoritmo eh entao toda serializada e eh passada para a string all
+    exp("(.*?)[.][a-zA-Z0-9]*$", file);
+    Compress::create(file + ".idx", all, compressType);
 }
 
 void searcher(string file, string pattern, string patterFile, bool count) {

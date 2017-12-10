@@ -14,19 +14,21 @@ FileReader::~FileReader() {
     this->file.close();
 }
 
-char FileReader::peek() {
+bool FileReader::peek(char& c) {
     /** Retorna um char sem contar na leitura */
-    char r = '\0';
-    if(!file.eof())
-        r = file.peek();
-    return r;
+    if(!file.eof()) {
+        c = file.peek();
+        return true;
+    }
+    return false;
 }
 
-char FileReader::getChar() {
-    char r = '\0';
-    if (!file.eof())
-        file.get(r);
-    return r;
+bool FileReader::getChar(char& c) {
+    if (!file.eof()) {
+        file.get(c);
+        return true;
+    }
+    return false;
 }
 
 int FileReader::getInt() {

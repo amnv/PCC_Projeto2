@@ -5,17 +5,18 @@
 
 using namespace std;
 
-int readParameters(int argc, char* argv[], string& mode, string& pattern, string& file, bool& help, bool& count, string& patternFile, string& index) {
+int readParameters(int argc, char* argv[], string& mode, string& pattern, string& file, bool& help, bool& count, string& patternFile, string& index, string& compress) {
     /** Coloca os parametros nos locais corretos */
     struct option extendedOptions[] = {
         {"pattern", required_argument, 0, 'p'},
         {"count", no_argument, 0, 'c'},
         {"indextype", required_argument, 0, 'i'},        
         {"help", no_argument, 0, 'h'},
+        {"compression", required_argument, 0, 'z'},
         {0, 0, 0, 0}
     };
     int c;
-    while( ( c = getopt_long(argc, argv, "hcp:i:", extendedOptions, NULL) ) != -1 ) {
+    while( ( c = getopt_long(argc, argv, "hcp:i:z:", extendedOptions, NULL) ) != -1 ) {
         switch (c) {
             case 'h':
                 help = true;
@@ -28,6 +29,9 @@ int readParameters(int argc, char* argv[], string& mode, string& pattern, string
                 break;
             case 'i':
                 index = optarg;
+                break;
+            case 'z':
+                compress = optarg;
                 break;
         }
     }
@@ -43,7 +47,7 @@ int readParameters(int argc, char* argv[], string& mode, string& pattern, string
 
 }
 
-void debugParams(string mode, string pattern, string file, bool help, bool count, string patternFile, string index) { 
+void debugParams(string mode, string pattern, string file, bool help, bool count, string patternFile, string index, string compress) { 
     /** apenas para debug, mostra valores de alguns parametros */
     if (!mode.empty())
         cout << "Mode: " << mode << endl;
@@ -65,13 +69,16 @@ void debugParams(string mode, string pattern, string file, bool help, bool count
 
     if (!index.empty())
         cout << "IndexType: " << index << endl;
+
+    if (!compress.empty())
+        cout << "CompressType: " << compress << endl;
 } 
 
 int main(int argc, char* argv[]) {
-    string file = "", indexType = "", pattern = "", mode = "";
+    string file = "", indexType = "", pattern = "", mode = "", compress = "";
     bool help = false, count = false;
     string patternFile = "";
-    readParameters(argc, argv, mode, pattern, file, help, count, patternFile, indexType);
+    readParameters(argc, argv, mode, pattern, file, help, count, patternFile, indexType, compress);
     
     // debugParams(mode, pattern, file, help, count, patternFile, indexType);
     if (help) {
@@ -80,7 +87,8 @@ int main(int argc, char* argv[]) {
 OPCOES:\n\
   -h, --help \t\t\t Mostra esse help.\n\n\
 index\n\
-  -i, --indextype {tree|array} \t Escolha do algoritmo de indexacao.\n\n\
+  -i, --indextype {tree|array} \t Escolha do algoritmo de indexacao.\n\
+  -z  --compression {LZ77|LZ78}\t Escolha do algoritmo de compressao.\n\n\
 search\n\
   -p, --pattern FILE \t\t Le os padroes de um arquivo.\n\
   -c, --count \t\t\t Modo de contagem de ocorrencias.\n\
@@ -111,7 +119,7 @@ search\n\
 
 
     if (mode == "index") {
-        indexer(file, indexType);
+        indexer(file, indexType, compress);
     } else { //jah passou pela verificacao anterior
         searcher(file, pattern, patternFile, count);
     }
