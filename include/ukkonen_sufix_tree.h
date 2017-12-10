@@ -100,4 +100,39 @@ void build_sufix_tree(std::string text, std::string alphabet){
     }
 }
 
+void check_pattern(std::string pat){
+    int cn = 0;
+    for(int i=0; i<pat.size(); i++){
+        bool found = false;
+        for(std::map<char,int>::iterator iter = t[cn].chd.begin(); iter != t[cn].chd.end(); iter++){
+            Node chd = t[iter->second];
+            int len = chd.len() <= pat.size()-i ? chd.len() : pat.size()-i;
+
+            std::string chdString = s.substr(chd.l, len);
+            std::string patString = pat.substr(i, len);
+            if(chdString.find("$") != std::string::npos){
+                patString += "$";
+            }
+
+            //std::cout << "CHD SUBS: " <<  chdString << ", PAT SUBS: " << patString << std::endl;
+            if(chdString == patString){
+                cn = iter->second;
+                i += len - 1;
+                found = true;
+                break;
+            }
+
+
+        }
+
+        if(!found){
+            std::cout << "pattern not found" << std::endl;
+            return;
+        }
+
+    }
+
+    std::cout << "pattern found" << std::endl;
+}
+
 #endif
