@@ -1,3 +1,5 @@
+#ifndef FILEWRITER
+#define FILEWRITER
 
 #include <string>
 #include <fstream>
@@ -14,9 +16,14 @@ public:
 
     ~FileWriter();
 
-    void write(std::string, std::string opt = "");
+    void write(std::string);
+
+    void write(int);
+
+    void write(char);
 
     void flush();
 
     void setFile(std::string path, bool append);
 };
+#endif
