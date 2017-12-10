@@ -16,9 +16,19 @@ FileWriter::~FileWriter() {
     this->file.close();
 }
 
-void FileWriter::write(string text, string opt) {
+void FileWriter::write(string text) {
     /** Escreve no arquivo */
-    this->file << text << opt;
+    this->file << text;
+}
+
+void FileWriter::write(int n) {
+    /** Escreve no arquivo */
+    this->file << n;
+}
+
+void FileWriter::write(char c) {
+    /** Escreve no arquivo */
+    this->file << c;
 }
 
 void FileWriter::flush() {

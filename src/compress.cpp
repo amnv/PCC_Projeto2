@@ -21,12 +21,12 @@ void Compress::create(string file, string& text, string alg) {
     // }
     //
 
-    if (alg == "lz77") {
-        LZ77::encode(text, w);
-    } else {
-        LZ78::encode(text, w);
-    }
-
+    // if (alg == "lz77") {
+    //     LZ77::encode(text, w);
+    // } else {
+    //     LZ78::encode(text, w);
+    // }
+    LZ77::encode("A_ASA_DA_CAS0A", w);
     w->flush();
 }
 

@@ -16,11 +16,10 @@ void LZ78::encode(string text, FileWriter*  w) {
             D.insert(pair<string,int>(temp+c, D.size()));
             w->write(to_string(D[temp]));
             if (c >= '0' && c <= '9') {
-                char esp = c_esp;
-                w->write(string(1, esp) + string(1, esp) + string(1, c)); //marca numeros com caracter especial
-            } else {
-                w->write(string(1, c));
+                w->write((char)c_esp);
+                w->write((char)c_esp);
             }
+            w->write(c); //marca numeros com caracter especial
             temp = "";
         } else {
             temp += c;

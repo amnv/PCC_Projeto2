@@ -16,7 +16,11 @@ public:
 
     ~FileWriter();
 
-    void write(std::string, std::string opt = "");
+    void write(std::string);
+
+    void write(int);
+
+    void write(char);
 
     void flush();
 
