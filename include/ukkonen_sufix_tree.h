@@ -7,6 +7,28 @@
 #include <map>
 #include <cfloat>
 
+std::vector<std::string> split(std::string line, std::string delimiter) {
+    size_t pos = 0;
+    std::string token;
+    std::vector<std::string> splited;
+    while ((pos = line.find(delimiter)) != std::string::npos) {
+        token = line.substr(0, pos);
+        splited.push_back(token);
+        line.erase(0, pos + delimiter.length());
+    }
+
+    if(pos = line.find(delimiter) != std::string::npos){
+        pos = line.find("\n");
+        token = line.substr(0, pos);
+        splited.push_back(token);
+    }
+    else {
+        splited.push_back(line);
+    }
+
+    return splited;
+}
+
 std::string s;
 struct Node{
 public:
@@ -27,11 +49,39 @@ public:
     char operator[](int i){
         return s[l+i];
     }
+
+    std::string to_string(){
+        std::string nodeStr = "";
+
+        nodeStr += std::to_string(id) + "," + std::to_string(l) + "," + std::to_string(r) + "," + std::to_string(p);
+        for(std::map<char,int>::iterator iter = chd.begin(); iter != chd.end(); iter++){
+            nodeStr += ",";
+
+            nodeStr += std::to_string((int)iter->first);
+            nodeStr += "," + std::to_string(iter->second);
+        }
+
+        //std::cout << "NODE " << nodeStr << std::endl;
+        return nodeStr;
+    }
+
+    static Node from_string(std::string nodeStr){
+        std::vector<std::string> data = split(nodeStr, ",");
+        
+        Node node = Node(std::stoi(data[0]), std::stoi(data[1]), std::stoi(data[2]), std::stoi(data[3]));
+        //std::cout << data[0] << ", " << data[1] << ", " << data[2] << ", " << data[3] << ", size: " << data.size() << std::endl;
+        for(int i=4; i<data.size(); i+=2){
+            //std::cout << "    " << data[i] << ", " << data[i+1] << std::endl;
+            node.chd[std::stoi(data[i]) + '0'] = std::stoi(data[i+1]);
+        }
+        //std::cout << "id=" << node.id << " chd=" << node.chd.size() << std::endl;
+        return node;
+    }
 };
 
 class SufixTree{
 public:
-    const int N = 112345;
+    static const int N = 112345;
     int nodeid;
     std::string s;
     std::vector<Node> t;
@@ -45,7 +95,7 @@ public:
     ~SufixTree(){};
 
     int new_node(int L, int R, int P){
-        t[nodeid] = (Node(nodeid, L, R, P));
+        t[nodeid] = Node(nodeid, L, R, P);
         return nodeid++;
     };
 
@@ -54,7 +104,7 @@ public:
         for(int i=0; i<2*level; i++){
             std::cout << " ";
         }
-        std::cout << "[id=" << root.id << " l=" << root.l << " r=" << root.r;
+        std::cout << "[id=" << root.id << " l=" << root.l << " r=" << root.r << " chd=" << root.chd.size();
 
         int len = std::min(root.r, static_cast<int>(text.size()));
         len = len == -1 ? text.size() : len;
@@ -132,8 +182,6 @@ public:
                     found = true;
                     break;
                 }
-
-
             }
 
             if(!found){
@@ -145,6 +193,37 @@ public:
 
         std::cout << "pattern found" << std::endl;
     };
+
+    std::string to_string(){
+        std::string treestr = std::to_string(nodeid) + "\n";
+        treestr += s + "\n";
+
+        for(int i=0; i<t.size(); i++){
+            if(t[i].id == 0 && i!=0)
+                continue;
+            treestr += t[i].to_string() + "\n";
+        }
+
+        return treestr;
+    }
+
+    static SufixTree from_string(std::string treestr){
+        std::vector<std::string> data = split(treestr, "\n");
+        SufixTree tree;
+        tree.nodeid = std::stoi(data[0]);
+        tree.s = data[1];
+        tree.t = std::vector<Node>(N*2, Node());
+
+        for(int i=2; i<data.size(); i++){
+            if(data[i] == "")
+                continue;
+            //std::cout << "Creating Node with: " << data[i] << std::endl;
+            Node node = Node::from_string(data[i]);
+            tree.t[node.id] = node;    
+        }
+
+        return tree;
+    }
 
 };
 
