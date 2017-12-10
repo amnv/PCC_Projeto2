@@ -14,8 +14,11 @@ std::string s;
 struct Node{
 public:
     int id;
+    //start index
     int l;
+    //ending index
     int r;
+    //parent
     int p;
     std::map<char, int> chd;
 
@@ -36,7 +39,7 @@ int new_node(int L, int R, int P){
 }
 
 void print_cst(Node root, int level, std::string text){
-    std::cout << "root: " << root.r << std::endl;
+    //std::cout << "root: " << root.r << std::endl;
     for(int i=0; i<2*level; i++){
         std::cout << " ";
     }
@@ -64,6 +67,9 @@ void build_sufix_tree(std::string text, std::string alphabet){
     s = text + '$';
 
     for(int i=0; i<s.size(); i++){
+        std::cout << "i=" << i << std::endl;
+        //cn eh o cara q eu to analisando
+        //cd eh o index do filho
         int cn = 0, cd = 0;
 
         for(int j=i; j<s.size(); j++){
@@ -83,14 +89,14 @@ void build_sufix_tree(std::string text, std::string alphabet){
                 t[t[mid].p].chd[t[mid][0]] = mid;
                 break;
             }
-            if(cd = t[cn].len()){
+            if(cd == t[cn].len()){
                 cn = t[cn].chd[s[j]];
                 cd = 0;
             }
             cd++;
         }
 
-        print_cst(t[0], 0, s.substr(i, s.size()-i));
+        print_cst(t[0], 0, s);
     }
 }
 
