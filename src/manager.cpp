@@ -1,15 +1,34 @@
-#include <pcc/manager>
+#include <pcc/manager.h>
 #include <iostream>
+#include <pcc/compress.h>
 
 using namespace std;
 
-Manager::Manager(string file, string mode, string indexType, string pattern, string patternFile, bool count) {
-    cout << file << mode << indexType << pattern << patternFile << count;
-    if (mode == "index") {
-        // Indexer i(file, indexType);
+auto print = [](auto m){ cout << m << endl;};
 
-    } else {
-        // Searcher s(file, pattern, patternFile, count);
-
+void indexer(string file, string indexType) {
+    // cout << "Modo de indexação " << endl;
+    if (indexType == "array") {
+        //chama o array suffix
+    } else { //ja passou pela verificacao no main (array | suffix)
+        //chama o suffix tree
     }
+
+    string all = "A_ASA_DA_CASA";
+    //saida do algoritmo eh entao toda serializada e eh passada para o metodo compress
+    Compress::create(file + ".idx", all);
+    // int** o = build_dfa("ABABAC"); //aqui apenas para test
+    // print(o['B'][5]);
+}
+
+void searcher(string file, string pattern, string patterFile, bool count) {
+    // cout << "Modo de busca " << endl;
+    string uncompress = Compress::extract(file);
+    cout << uncompress << endl;
+    //o metodo extract retorna uma string, essa deve ser deserializada 
+    // e entao pode ser usada como se não houvesse compressão
+
+    //chama o buscador aqui, se precisar diferenciar o tipo do indexador (array,tree) pode
+    // colocar junto c a serializacao uma sinalizacao e entao resgata-la aqui
+
 }
