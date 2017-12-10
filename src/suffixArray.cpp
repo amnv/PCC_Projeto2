@@ -3,6 +3,13 @@
 
 using namespace std;
 
+Tripla Tripla::make_tripla(int a, int b, int c)
+{
+	Tripla t;
+    t.first = a; t.second = b; t.third = c;
+	return t;
+}
+
 map<string, int> SuffixArray::buildSuffixArray(string text)
 {
     map<string, int> ret;
@@ -26,6 +33,21 @@ vector<int> SuffixArray::buildSuffixTab(string text)
     return this->suftab;
 }
 
+vector<int> SuffixArray::search(string text, string pattern)
+{
+  vector<int> sa;
+    int lp = this->lp(pattern, text);
+    cout << "saiu lp" << endl;
+    int rp = this->rp(pattern, text);
+    cout << "saiu rp" << endl;
+    cout << "lp " << lp << " lr " << rp << endl;
+    if (lp > rp) return sa;
+    
+    for(int i = lp; i <= rp; i++)
+        sa.push_back(this->suftab[i]);
+    sort(sa.begin(), sa.end());
+    return sa;
+}
 
 vector<int> SuffixArray::search(string text, string pattern, vector<int> Llcp, vector<int> Rlcp)
 {
@@ -34,7 +56,7 @@ vector<int> SuffixArray::search(string text, string pattern, vector<int> Llcp, v
     cout << "saiu lp" << endl;
     int rp = this->rp(pattern, text);
     cout << "saiu rp" << endl;
-
+    
     if (lp > rp) return sa;
     
     for(int i = lp; i <= rp; i++)
@@ -45,16 +67,17 @@ vector<int> SuffixArray::search(string text, string pattern, vector<int> Llcp, v
 
 int SuffixArray::lexcmp(string a, string b, int m)
 {
-    a = a.size() <= m ?a : a.substr(0, m);
+   /** a = a.size() <= m ?a : a.substr(0, m);
     b = b.size() <= m ?b : b.substr(0, m);
 
     if (a < b) return -1;
     if (b < a) return 1;
+    **/
 
-    return 0;
+    return a.compare(0,m, b, 0, m);
 }
 
-int SuffixArray::rp(string pattern, string text)
+int SuffixArray::lp(string pattern, string text)
 {
     int n = text.size();
     int m = pattern.size();
@@ -67,7 +90,7 @@ int SuffixArray::rp(string pattern, string text)
 
     int l = 0;
 
-    while ((r-1) > 1)
+    while ((r - l) > 1)
     {
         int h = (l+r)/2;
         if (this->lexcmp(pattern, text.substr(this->suftab[h]), m) <= 0)
@@ -78,7 +101,7 @@ int SuffixArray::rp(string pattern, string text)
     return r;
 }
     
-int SuffixArray::lp(string pattern, string text)
+int SuffixArray::rp(string pattern, string text)
 {
     int n = text.size();
     int m = pattern.size();
@@ -92,9 +115,9 @@ int SuffixArray::lp(string pattern, string text)
     int l = 0;
     int r = n-1;
 
-    while((r-1) > 1)
+    while((r - l) > 1)
     {
-        int h = (l+r)/2;
+        int h = ceil((l+r)/2);
         if (this->lexcmp(text.substr(this->suftab[h]), pattern, m) <= 0)
             l = h;
         else
@@ -103,47 +126,15 @@ int SuffixArray::lp(string pattern, string text)
     return l;
 }
 
-void SuffixArray::debug()
-{
-    string t = "mississippi$";
-    vector<vector<int> > p = this->build_P(t);
-
-
-    //teste suffixArray
-    cout << "teste suffixArray" << endl;
-    map<string, int> ret = this->buildSuffixArray(t);
-    for(map<string, int>::iterator i = ret.begin(); i != ret.end(); i++)
-    {
-        cout << i->first << " " << i->second << endl;
-    }
-
-    //teste suffix tab
-    cout << "teste suffix tab" << endl;
-    this->buildSuffixTab(t);
-    for (int i = 0; i < this->suftab.size(); i++)
-    {
-        cout << this->suftab[i] << endl;
-    }
-/*
-    // teste achar occ 
-    cout << "teste achar occ" << endl;
-    string pat = "ssi";
-    vector<int> occ = this->search(t, pat);
-    cout << "mostrando ocorrencias" << endl;
-    for (int i = 0; i < occ.size(); i++)
-        cout << t.substr(occ[i], pat.size()) << endl;
-*/
-}
-
 vector<int> SuffixArray::getSuffixTab()
 {
     return this->suftab;
 }
 
-int SuffixArray::rsort(vector<pair<int, pair<int, int> > > v, int n)
+vector<Tripla>* SuffixArray::rsort(vector<Tripla> *v, int n)
 {
     cout << "to tentando entender" << endl;
-    return 0;
+    return v;
 }
 
 vector<vector<int> > SuffixArray::build_P(string text)
@@ -188,34 +179,64 @@ vector<vector<int> > SuffixArray::build_P(string text)
     for (int k = 1; k < endLoop; k++)
     {
         int j = pow(2, k-1);
-        vector<pair<int, pair<int, int> > > v;
+        vector<Tripla> v;
         for (int i = 0; i < n; i++)
         {
-            v.push_back(make_pair(
+            v.push_back(Tripla::make_tripla(
                 p[k-1][i],
-                make_pair(
-                    ((i+j) < n) ?p[k-1][i+j] :0,
-                    i)));
+                ((i+j) < n) ?p[k-1][i+j] :0,
+                i));
         }
 
         cout << "chegou aqui 4" << endl;
-        this->rsort(v, n+1);
+        cout << "valor de n " << n << endl;
+      //  rsort(&v, n+1);
         cout << "chegou aqui 5" << endl;
         int r = 1; 
         vector<int> Pk(n, -1);
-        Pk[v[0].second.second] = r;
+        Pk[v[0].third] = r;
         for(int i = 1; i < n; i++)
         {
             if ((v[i].first != v[i-1].first)
-                && (v[i].second.first != v[i-1].second.first)
-                && (v[i].second.second != v[i-1].second.second))
+                && (v[i].second != v[i-1].second)
+                && (v[i].third != v[i-1].third))
             {
                 r++;
             }
-            Pk[v[i].second.second] = r;
+            Pk[v[i].third] = r;
         }
         cout << "chegou aqui 6" << endl;
         p.push_back(Pk);
     }
     return p;
+}
+
+void SuffixArray::debug()
+{
+    string t = "bananabana$";
+//    vector<vector<int> > p = this->build_P(t);
+
+    //teste suffixArray
+    cout << "teste suffixArray" << endl;
+    map<string, int> ret = this->buildSuffixArray(t);
+    for(map<string, int>::iterator i = ret.begin(); i != ret.end(); i++)
+    {
+        cout << i->first << " " << i->second << endl;
+    }
+
+    //teste suffix tab
+    cout << "teste suffix tab" << endl;
+    this->buildSuffixTab(t);
+    for (int i = 0; i < this->suftab.size(); i++)
+    {
+        cout << this->suftab[i] << endl;
+    }
+
+    // teste achar occ 
+    cout << "teste achar occ" << endl;
+    string pat = "ba";
+    vector<int> occ = this->search(t, pat);
+    cout << "mostrando ocorrencias" << endl;
+    for (int i = 0; i < occ.size(); i++)
+        cout << occ[i] << endl;
 }

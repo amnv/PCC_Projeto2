@@ -4,6 +4,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+class Tripla
+{
+public:
+	int first, second, third;
+	static Tripla make_tripla(int a, int b, int c);
+};
+
 class SuffixArray 
 {
 private:
@@ -18,14 +25,14 @@ public:
     vector<int> getSuffixTab();
     int lexcmp(string a, string b, int m);
     void debug();
-
+    vector<int> search(string text, string pattern);
 
     vector<int> search(string text, string pattern, vector<int> Llcp, vector<int> Rlcp);
     vector<vector<int> > build_P(string text);
     vector<int> sarr_from_P(vector<int> p);
     void fillLlcpRlcp(string txt, vector<int> sarr, int l, int r, vector<int> Llcp, vector<int> Rlcp, vector<int> p);
     int lcp(vector<string> x, vector<string> y);
-    int rsort(vector<pair<int, pair<int, int> > > v, int n);
+    vector<Tripla>* rsort(vector<Tripla> *v, int n);
 };
 
 #endif
