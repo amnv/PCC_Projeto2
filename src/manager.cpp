@@ -5,7 +5,7 @@
 
 using namespace std;
 
-auto exp = [](string ex, string& str) {
+auto reg = [](string ex, string& str) {
     regex rgx(ex);
     smatch match;
     if (regex_search(str, match, rgx)) {
@@ -27,7 +27,7 @@ void indexer(string file, string indexType, string compressType) {
 
     
     //saida do algoritmo eh entao toda serializada e eh passada para a string all
-    exp("(.*?)[.][a-zA-Z0-9]*$", file);
+    reg("(.*?)[.][a-zA-Z0-9]*$", file);
     Compress::create(file + ".idx", all, compressType);
 }
 
