@@ -3,6 +3,15 @@
 
 #include <bits/stdc++.h>
 using namespace std;
+/**
+ * author Allyson Manoel
+ **/
+class Gambe
+{
+public:
+    int ini; int fim; string line;
+    static Gambe make_gambe(int,int, string);
+};
 
 class Tripla
 {
@@ -32,7 +41,7 @@ public:
     int lexcmp(string a, string b, int m);
     void debug();
     vector<int> search(string text, string pattern);
-
+    string findLine(vector<Gambe> g, int s);
     void setPattern(string path);
     vector<int> search(string text, string pattern, vector<int> Llcp, vector<int> Rlcp);
     vector<vector<int> > build_P(string text);

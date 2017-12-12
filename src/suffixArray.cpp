@@ -6,6 +6,10 @@
 
 using namespace std;
 
+/**
+ * author Allyson Manoel
+ **/
+
 Tripla Tripla::make_tripla(int a, int b, int c)
 {
 	Tripla t;
@@ -48,6 +52,34 @@ vector<int> SuffixArray::buildSuffixTab(string text)
     }
 
     return this->suftab;
+}
+
+Gambe Gambe::make_gambe(int a,int b, string c);
+{
+    Gambe g;g.ini=a; g.fim = b; g.line = c;
+    return g;
+}
+
+vector<Gambe> SuffixArray::gambe(string text)
+{
+    vector<Gambe> g;
+    vector<string> v = Manager.split(text, "\n");
+    int ini = 0;
+    int fim = 0;
+    for (int i = 0; i < v.size(); i++)
+    {
+        fim += v[i].size();
+        g.push_back(
+            Gambe::make_gambe(
+                ini,
+                fim,
+                v[i]
+            )
+        );
+        ini += fim + 1;
+    }
+
+    return g;
 }
 
 vector<int> SuffixArray::search(string text, string pattern)
@@ -252,38 +284,28 @@ void SuffixArray::count(string path, vector<int> suffixtab)
         this->count(path, pattern, suffixtab);
     }   
 }
+string SuffixArray::findLine(vector<Gambe> g, int pos)
+{
+    for (int i = 0; i < g.size(); i++)
+    {
+        if (g[i].ini <= pos && g[i].fim >= pos)
+            return g[i].line;
+    }
+}
 
 bool SuffixArray::occ(string text, string pattern, vector<int> suffixTab)
 {
-    vector<string> lines = split(text, '\n');
-
-
-    for (int j=0; j<lines.size(); j++)
-    {   
-        // string text = lines[j];
-
-        // cout << text << endl;
-        //gambiarra para saber se ocorrencia dentro da linha 
-        this->fim += text.size();
+    vector<Gambe> gambe = this->gambe(text);
 
         this->suftab = suffixTab;
         cout << "antes search" << text << " " << pattern << endl;
         vector<int> v = this->search(text, pattern);
         cout << "apos" << endl;
-        if (!v.empty())
+        for (int i = 0; i < v.size(); i++)
         {
-            for (int i = 0; i < v.size(); i++)
-            {
-                if (this->ini >= v[i] && this->fim <= v[i])
-                {
-                    cout << text << endl;
-                    break;
-                }
-            }
-            this->ini = this->fim + 1;
+            cout << this->findLine(gambe, v[i]) << endl;
         }
         return false; 
-    }
 }
 
 void SuffixArray::occ(vector<string> lines, vector<int> suffixtab)
