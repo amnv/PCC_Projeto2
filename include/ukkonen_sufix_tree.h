@@ -117,7 +117,7 @@ public:
 
 
         for(std::map<char,int>::iterator iter = root.chd.begin(); iter != root.chd.end(); iter++){
-            print_cst(t[iter->second], level+1, text);
+            // print_cst(t[iter->second], level+1, text);
         }
     };
 

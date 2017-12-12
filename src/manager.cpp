@@ -26,9 +26,11 @@ vector<string> split(string s, char d) {
     int m = 0;
     s+= d;
     for (int i=0; i<s.size(); i++) {
-        cout << s[i] << endl;
+        // cout << s[i] << endl;
         if (s[i] == d) {
+            // cout << "de boa" << endl;
             r.push_back(s.substr(m, i-m));
+            // cout << "oh no" << endl;
             m = i + 1;
         }
     }
@@ -42,12 +44,14 @@ void indexer(string file, string indexType, string compressType) {
     FileReader* r = new FileReader(file);
     if (indexType == "array") {
         //chama o array suffix
+        cout << "chamando o array" << endl;
         SuffixArray s;
         string line;
         string texto;
         while (r->getLine(line)) {
-            texto += line;
+            texto += line + "\n";
         }
+        // cout << texto << endl;
         vector<int> array = s.buildSuffixTab(texto);
         all = s.to_string(array);
         all += "IIiseparadoriII";
@@ -55,7 +59,7 @@ void indexer(string file, string indexType, string compressType) {
 
     } else { //ja passou pela verificacao no main (array | suffix)
         //chama o suffix tree
-
+        cout << "chamando o tree " << endl; 
         string line;
         while (r->getLine(line)) {
             SuffixTree s;
@@ -81,7 +85,7 @@ void indexer(string file, string indexType, string compressType) {
     // }
     //FIM TEMPORARIO
 
-    
+    // cout << all << endl;
     //saida do algoritmo eh entao toda serializada e eh passada para a string all
     reg("(.*?)[.][a-zA-Z0-9]*$", file);
     Compress::create(file + ".idx", all, indexType, compressType);
@@ -91,42 +95,45 @@ void searcher(string file, string pattern, string patternFile, bool count) {
     // cout << "Modo de busca " << endl;
     string suffix = "";
     string uncompress = Compress::extract(file, suffix);
-    cout << uncompress << endl;
-    if (suffix == "array") {
+    cout << uncompress << suffix << endl;
+    if (suffix == "a") {
+        cout << "buscando array" << endl;
         string array = uncompress, texto = uncompress;
         reg("(.*)IIiseparadoriII", array);
         reg("IIiseparadoriII(.*)", texto);
         SuffixArray s;
         vector<int> v = s.from_string(array);
-        
 
         if (!patternFile.empty()) { //passou
             s.setPattern(patternFile);
             if (count)
                 s.count(texto, v);
             else {
-                vector<string> lines = split(texto, ' ');
-                for (int i=0; i<lines.size(); i++){
-                    string line = lines[i]; 
-                    s.occ(line, v);
-                }
+                vector<string> lines = split(texto, '\n');
+                s.occ(lines, v);
                 s.reset();
             }
         } else {
             if (count)
                 s.count(texto, pattern, v);
             else {
-                vector<string> lines = split(texto, ' ');
-                for (int i=0; i<lines.size(); i++){
-                    string line = lines[i];
-                    s.occ(line, pattern, v);
-                }
-                s.reset();
+                // cout << "here '" << texto << "'" << endl;
+                vector<string> lines = split(texto, '\n');
+                // cout << "opa" << endl;
+                // for (int i=0; i<lines.size(); i++){
+                //     string line = lines[i];
+                //     cout << "123" << endl;
+                s.occ(lines, pattern, v);
+                    // cout << "line " << line << endl;
+                // }
+                // cout << "opa2" << endl;
+                // s.reset();
             }
         }
         // s.search(texto, patternFile);
 
     } else {
+        cout << "buscando tree" << endl;
         vector<string> suffix = split(uncompress, (char) 0);
         FileReader* r;
         if (!patternFile.empty()) {
@@ -134,6 +141,7 @@ void searcher(string file, string pattern, string patternFile, bool count) {
         }
         string pat = "";
         bool one = true;
+        // cout << "aqui tree" << endl;
         while ((one && patternFile.empty()) || (!patternFile.empty() && r->getLine(pat)) ) {
             long c = 0; //contador
             if (patternFile.empty()) {

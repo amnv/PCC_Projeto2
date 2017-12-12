@@ -52,11 +52,13 @@ vector<int> SuffixArray::buildSuffixTab(string text)
 vector<int> SuffixArray::search(string text, string pattern)
 {
   vector<int> sa;
+  cout << " asdsda" << endl;
     int lp = this->lp(pattern, text);
-  //  cout << "saiu lp" << endl;
+   cout << "saiu lp" << endl;
     int rp = this->rp(pattern, text);
+    
     //cout << "saiu rp" << endl;
-    //cout << "lp " << lp << " lr " << rp << endl;
+    cout << "lp " << lp << " lr " << rp << endl;
     if (lp > rp) return sa;
     
     for(int i = lp; i <= rp; i++)
@@ -68,11 +70,12 @@ vector<int> SuffixArray::search(string text, string pattern)
 vector<int> SuffixArray::search(string text, string pattern, vector<int> Llcp, vector<int> Rlcp)
 {
     vector<int> sa;
+    cout << "antes lp " << endl;
     int lp = this->lp(pattern, text);
     cout << "saiu lp" << endl;
     int rp = this->rp(pattern, text);
     cout << "saiu rp" << endl;
-    
+    cout << "321" << endl;
     if (lp > rp) return sa;
     
     for(int i = lp; i <= rp; i++)
@@ -98,12 +101,13 @@ int SuffixArray::lp(string pattern, string text)
     int n = text.size();
     int m = pattern.size();
     int r = n -1;
-
+    cout << pattern << " 12312" << this->suftab[0] << endl;
+    cout << text << " 123" << this->suftab[n-1] << endl;
     if (this->lexcmp(pattern, text.substr(this->suftab[0]), m) <= 0)
         return 0;
     if (this->lexcmp(text.substr(this->suftab[n-1]), pattern, m) < 0)
         return n;
-
+    cout << "$12312" << endl;
     int l = 0;
 
     while ((r - l) > 1)
@@ -113,6 +117,7 @@ int SuffixArray::lp(string pattern, string text)
             r = h;
         else l = h;
     }
+    cout << "912312" << endl;
     
     return r;
 }
@@ -221,7 +226,7 @@ vector<vector<int> > SuffixArray::build_P(string text)
             }
             Pk[v[i].third] = r;
         }
-        cout << "chegou aqui 6" << endl;
+        // cout << "chegou aqui 6" << endl;
         p.push_back(Pk);
     }
     return p;
@@ -242,18 +247,19 @@ void SuffixArray::count(string path, vector<int> suffixtab)
         this->count(path, pattern, suffixtab);
     }   
 }
-bool SuffixArray::occ(string path, string pattern, vector<int> suffixTab)
+bool SuffixArray::occ(vector<string> lines, string pattern, vector<int> suffixTab)
 {
-    string text;
-    FileReader file(path);
-    while(file.getLine(text))
+    for (int j=0; j<lines.size(); j++)
     {   
+        string text = lines[j];
+        // cout << text << endl;
         //gambiarra para saber se ocorrencia dentro da linha 
         this->fim += text.size();
 
         this->suftab = suffixTab;
+        cout << "antes search" << text << " " << pattern << endl;
         vector<int> v = this->search(text, pattern);
-
+        cout << "apos" << endl;
         if (!v.empty())
         {
             for (int i = 0; i < v.size(); i++)
@@ -270,13 +276,13 @@ bool SuffixArray::occ(string path, string pattern, vector<int> suffixTab)
     }
 }
 
-void SuffixArray::occ(string path, vector<int> suffixtab)
+void SuffixArray::occ(vector<string> lines, vector<int> suffixtab)
 {
     string pattern;
     FileReader file(this->path_pattern);
     while(file.getLine(pattern))
     { 
-        this->occ(path, pattern, suffixtab);
+        this->occ(lines, pattern, suffixtab);
     }
 }
 
