@@ -60,16 +60,23 @@ void indexer(string file, string indexType, string compressType) {
         //chama o suffix tree
         string line;
         cout << "linha aqui" << endl;
+        int i=0;
         while (r->getLine(line)) {
-            cout << "line " << line << endl;
+            //cout << "line " << line << endl;
+            std::cout << "Building sufix tree n=" << i << " lsize=" << line.size() << std::endl;
             SuffixTree s;
             s.build_sufix_tree(line);
-            v.push_back(s);
+            //v.push_back(s);
+            std::cout << "Converting sufix tree to string" << std::endl;
+            all += s.to_string() + (char) 0;
+            //v.erase(v.begin());
+            i++;
         }
-        cout << "linha fora" << endl;
-        for (int i=0; i<v.size(); i++) {
-            all += v[i].to_string() + (char) 0;
-        }
+        cout << "done" << endl;
+        //while(v.size() > 0) {
+        //    all += v[0].to_string() + (char) 0;
+        //    v.erase(v.begin());
+        //}
 
     }
     

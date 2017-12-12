@@ -86,7 +86,7 @@ public:
 
     SuffixTree(bool printTree = false){
         nodeid = 1;
-        t = std::vector<Node>(N*2, Node());
+        //t = std::vector<Node>(N*2, Node());
         print_tree = printTree;
         //t.push_back(Node());
     };
@@ -122,6 +122,7 @@ public:
     };
 
     void build_sufix_tree(std::string text){
+        t = std::vector<Node>(text.size()*2, Node());
         // Adiciona um caractere que nao aparece na string em nenhum lugar (nao ta no
         // alfabeto) no final para garantir que cada sufixo vai ter sua propria folha
         // Isso garante que nenhum sufixo eh prefixo de outro sufixo
