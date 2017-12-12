@@ -2,6 +2,7 @@
 
 #include "../include/pcc/suffixArray.h"
 #include "../include/pcc/filereader.h"
+#include <pcc/manager.h>
 
 using namespace std;
 
@@ -92,6 +93,7 @@ int SuffixArray::lexcmp(string a, string b, int m)
     if (a < b) return -1;
     if (b < a) return 1;
     **/
+    cout << "entrou na lex" << endl;
 
     return a.compare(0,m, b, 0, m);
 }
@@ -101,10 +103,13 @@ int SuffixArray::lp(string pattern, string text)
     int n = text.size();
     int m = pattern.size();
     int r = n -1;
-    cout << pattern << " 12312" << this->suftab[0] << endl;
-    cout << text << " 123" << this->suftab[n-1] << endl;
+    cout << pattern << " 12312 " << this->suftab[0] << endl;
+    
+    cout << text << " 123 " << this->suftab[n-1] << endl;
+    cout << " aspodk " << text.substr(this->suftab[0]) << endl;
     if (this->lexcmp(pattern, text.substr(this->suftab[0]), m) <= 0)
         return 0;
+    cout << "opa 1" << endl;
     if (this->lexcmp(text.substr(this->suftab[n-1]), pattern, m) < 0)
         return n;
     cout << "$12312" << endl;
@@ -247,11 +252,16 @@ void SuffixArray::count(string path, vector<int> suffixtab)
         this->count(path, pattern, suffixtab);
     }   
 }
-bool SuffixArray::occ(vector<string> lines, string pattern, vector<int> suffixTab)
+
+bool SuffixArray::occ(string text, string pattern, vector<int> suffixTab)
 {
+    vector<string> lines = split(text, '\n');
+
+
     for (int j=0; j<lines.size(); j++)
     {   
-        string text = lines[j];
+        // string text = lines[j];
+
         // cout << text << endl;
         //gambiarra para saber se ocorrencia dentro da linha 
         this->fim += text.size();

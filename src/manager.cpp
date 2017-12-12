@@ -44,7 +44,6 @@ void indexer(string file, string indexType, string compressType) {
     FileReader* r = new FileReader(file);
     if (indexType == "array") {
         //chama o array suffix
-        cout << "chamando o array" << endl;
         SuffixArray s;
         string line;
         string texto;
@@ -59,7 +58,6 @@ void indexer(string file, string indexType, string compressType) {
 
     } else { //ja passou pela verificacao no main (array | suffix)
         //chama o suffix tree
-        cout << "chamando o tree " << endl; 
         string line;
         while (r->getLine(line)) {
             SuffixTree s;

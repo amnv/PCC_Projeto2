@@ -101,19 +101,19 @@ public:
     void print_cst(Node root, int level, std::string text){
         //std::cout << "root: " << root.r << std::endl;
         for(int i=0; i<2*level; i++){
-            std::cout << " ";
+            // std::cout << " ";
         }
-        std::cout << "[id=" << root.id << " l=" << root.l << " r=" << root.r << " chd=" << root.chd.size();
+        // std::cout << "[id=" << root.id << " l=" << root.l << " r=" << root.r << " chd=" << root.chd.size();
 
         int len = std::min(root.r, static_cast<int>(text.size()));
         len = len == -1 ? text.size() : len;
         len = len - root.l;
-        std::cout << " len=" << len;
-        std::cout << " text=" << text.substr(root.l, root.len());
-        std::cout << " p=" << root.p;
+        // std::cout << " len=" << len;
+        // std::cout << " text=" << text.substr(root.l, root.len());
+        // std::cout << " p=" << root.p;
         // Nao faco ideia do que o slink eh
         // std::cout << " slink=";
-        std::cout <<  "]" << std::endl;
+        // std::cout <<  "]" << std::endl;
 
 
         for(std::map<char,int>::iterator iter = root.chd.begin(); iter != root.chd.end(); iter++){
