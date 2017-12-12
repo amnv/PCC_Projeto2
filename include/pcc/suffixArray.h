@@ -21,7 +21,7 @@ public:
     map<string, int> buildSuffixArray(string text);
     void count(string path, string pattern, vector<int> suffixtab);
     void count(string path, vector<int> suffixtab);
-    void occ(string path, string pattern, vector<int> suffixtab);
+    bool occ(string path, string pattern, vector<int> suffixtab);
     void occ(string path, vector<int> suffixtab);
 
     int lp(string pattern, string text);

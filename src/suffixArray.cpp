@@ -39,10 +39,10 @@ vector<int> SuffixArray::search(string text, string pattern)
 {
   vector<int> sa;
     int lp = this->lp(pattern, text);
-    cout << "saiu lp" << endl;
+    // cout << "saiu lp" << endl;
     int rp = this->rp(pattern, text);
-    cout << "saiu rp" << endl;
-    cout << "lp " << lp << " lr " << rp << endl;
+    // cout << "saiu rp" << endl;
+    // cout << "lp " << lp << " lr " << rp << endl;
     if (lp > rp) return sa;
     
     for(int i = lp; i <= rp; i++)
@@ -55,9 +55,9 @@ vector<int> SuffixArray::search(string text, string pattern, vector<int> Llcp, v
 {
     vector<int> sa;
     int lp = this->lp(pattern, text);
-    cout << "saiu lp" << endl;
+    // cout << "saiu lp" << endl;
     int rp = this->rp(pattern, text);
-    cout << "saiu rp" << endl;
+    // cout << "saiu rp" << endl;
     
     if (lp > rp) return sa;
     
@@ -135,13 +135,13 @@ vector<int> SuffixArray::getSuffixTab()
 
 vector<Tripla>* SuffixArray::rsort(vector<Tripla> *v, int n)
 {
-    cout << "to tentando entender" << endl;
+    // cout << "to tentando entender" << endl;
     return v;
 }
 
 vector<vector<int> > SuffixArray::build_P(string text)
 {
-    cout << "chegou aqui 1" << endl;
+    // cout << "chegou aqui 1" << endl;
     vector<vector<int> > p;
     int n = text.size();
     if (n == 1) 
@@ -176,7 +176,7 @@ vector<vector<int> > SuffixArray::build_P(string text)
         }
     }
     p.push_back(p0);
-    cout << "chegou aqui 3" << endl;
+    // cout << "chegou aqui 3" << endl;
     int endLoop = (int) ceil(log2(n)) + 1;
     for (int k = 1; k < endLoop; k++)
     {
@@ -190,10 +190,10 @@ vector<vector<int> > SuffixArray::build_P(string text)
                 i));
         }
 
-        cout << "chegou aqui 4" << endl;
-        cout << "valor de n " << n << endl;
+        // cout << "chegou aqui 4" << endl;
+        // cout << "valor de n " << n << endl;
       //  rsort(&v, n+1);
-        cout << "chegou aqui 5" << endl;
+        // cout << "chegou aqui 5" << endl;
         int r = 1; 
         vector<int> Pk(n, -1);
         Pk[v[0].third] = r;
@@ -207,24 +207,24 @@ vector<vector<int> > SuffixArray::build_P(string text)
             }
             Pk[v[i].third] = r;
         }
-        cout << "chegou aqui 6" << endl;
+        //cout << "chegou aqui 6" << endl;
         p.push_back(Pk);
     }
     return p;
 }
 
-void SuffixArray::count(string path, string pattern, vector<int> suffixTab)
+void SuffixArray::count(string text, string pattern, vector<int> suffixTab)
 {
-    FileReader* r = new FileReader(path);
-    string line;
-    string text;
-    while (r->getLine(line))
-    {
-        text += line;
-    }
+    // FileReader* r = new FileReader(path);
+    // string line;
+    // string text;
+    // while (r->getLine(line))
+    // {
+    //     text += line;
+    // }
     this->suftab = suffixTab;
     cout << this->search(text, pattern).size() << endl;
-    delete r;
+    // delete r;
 }
 
 void SuffixArray::count(string path, vector<int> suffixtab)
@@ -237,29 +237,32 @@ void SuffixArray::count(string path, vector<int> suffixtab)
     }   
 }
 
-void SuffixArray::occ(string path, string pattern, vector<int> suffixTab)
+bool SuffixArray::occ(string text, string pattern, vector<int> suffixTab)
 {
-    string text;
-    FileReader file(path);
-    while(file.getLine(text))
-    {    
+    // string text;
+    // FileReader file(path);
+    // while(file.getLine(text))
+    // {    
         this->suftab = suffixTab;
         vector<int> v = this->search(text, pattern);
 
         if (!v.empty())
         {
             cout << text << endl;
+            return true;
         }
-    }
+        return false;
+    // }
 }
 
-void SuffixArray::occ(string path, vector<int> suffixtab)
+void SuffixArray::occ(string text, vector<int> suffixtab)
 {
     string pattern;
     FileReader file(path);
     while(file.getLine(pattern))
     { 
-        this->occ(path, pattern, suffixtab);
+        if (this->occ(text, pattern, suffixtab))
+            break;
     }
 }
 
