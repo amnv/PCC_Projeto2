@@ -59,20 +59,18 @@ void indexer(string file, string indexType, string compressType) {
     } else { //ja passou pela verificacao no main (array | suffix)
         //chama o suffix tree
         string line;
-        cout << "linha aqui" << endl;
         int i=0;
         while (r->getLine(line)) {
             //cout << "line " << line << endl;
-            std::cout << "Building sufix tree n=" << i << " lsize=" << line.size() << std::endl;
+            // std::cout << "Building sufix tree n=" << i << " lsize=" << line.size() << std::endl;
             SuffixTree s;
             s.build_sufix_tree(line);
             //v.push_back(s);
-            std::cout << "Converting sufix tree to string" << std::endl;
+            // std::cout << "Converting sufix tree to string" << std::endl;
             all += s.to_string() + (char) 0;
             //v.erase(v.begin());
             i++;
         }
-        cout << "done" << endl;
         //while(v.size() > 0) {
         //    all += v[0].to_string() + (char) 0;
         //    v.erase(v.begin());
@@ -102,9 +100,8 @@ void searcher(string file, string pattern, string patternFile, bool count) {
     // cout << "Modo de busca " << endl;
     string suffix = "";
     string uncompress = Compress::extract(file, suffix);
-    cout << uncompress << suffix << endl;
+    // cout << uncompress << suffix << endl;
     if (suffix == "a") {
-        cout << "buscando array" << endl;
         string array = uncompress, texto = uncompress;
         reg("(.*)IIiseparadoriII", array);
         reg("IIiseparadoriII(.*)", texto);
@@ -140,7 +137,6 @@ void searcher(string file, string pattern, string patternFile, bool count) {
         // s.search(texto, patternFile);
 
     } else {
-        cout << "buscando tree" << endl;
         vector<string> suffix = split(uncompress, (char) 0);
         FileReader* r;
         if (!patternFile.empty()) {
@@ -157,7 +153,7 @@ void searcher(string file, string pattern, string patternFile, bool count) {
             }
             for (int i=0; i<suffix.size(); i++) {
                 SuffixTree t = SuffixTree::from_string(suffix[i]);
-                if (!count && t.check_pattern(pat))
+                if (!count && t.check_pattern(pat) == 1)
                     cout << t.s << endl;
                 if (count) {
                     c += t.check_pattern(pat, true);
