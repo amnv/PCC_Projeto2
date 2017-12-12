@@ -6,6 +6,8 @@
 #include <vector>
 #include <pcc/suffixArray.h>
 #include <ukkonen_sufix_tree.h>
+// std::string text = "Let me split this into words";
+// std::vector<std::string> results;
 
 using namespace std;
 
@@ -19,10 +21,24 @@ auto reg = [](string ex, string& str) {
     return false;
 };
 
+vector<string> split(string s, char d) {
+    vector<string> r;
+    int m = 0;
+    s+= d;
+    for (int i=0; i<s.size(); i++) {
+        cout << s[i] << endl;
+        if (s[i] == d) {
+            r.push_back(s.substr(m, i-m));
+            m = i + 1;
+        }
+    }
+    return r;
+}
+
 void indexer(string file, string indexType, string compressType) {
 
     vector<SuffixTree> v;
-    string all = "";/*
+    string all = "";
     FileReader* r = new FileReader(file);
     if (indexType == "array") {
         //chama o array suffix
@@ -42,7 +58,7 @@ void indexer(string file, string indexType, string compressType) {
 
         string line;
         while (r->getLine(line)) {
-            SuffixTree s();
+            SuffixTree s;
             s.build_sufix_tree(line);
             v.push_back(s);
         }
@@ -52,17 +68,17 @@ void indexer(string file, string indexType, string compressType) {
         }
 
     }
-    */
+    
     
     //TEMPORARIO PARA TESTAR COMPRESSAO
-    {
-        FileReader* r = new FileReader(file);
-        string line;
-        all = "";
-        while (r->getLine(line)) {
-            all += line + "\n";
-        }
-    }
+    // {
+    //     FileReader* r = new FileReader(file);
+    //     string line;
+    //     all = "";
+    //     while (r->getLine(line)) {
+    //         all += line + "\n";
+    //     }
+    // }
     //FIM TEMPORARIO
 
     
@@ -75,7 +91,7 @@ void searcher(string file, string pattern, string patternFile, bool count) {
     // cout << "Modo de busca " << endl;
     string suffix = "";
     string uncompress = Compress::extract(file, suffix);
-    cout << uncompress << endl; /*
+    cout << uncompress << endl;
     if (suffix == "array") {
         string array = uncompress, texto = uncompress;
         reg("(.*)IIiseparadoriII", array);
@@ -89,7 +105,7 @@ void searcher(string file, string pattern, string patternFile, bool count) {
             if (count)
                 s.count(texto, v);
             else {
-                vector<string> lines = split(texto, '\n');
+                vector<string> lines = split(texto, ' ');
                 for (int i=0; i<lines.size(); i++){
                     string line = lines[i]; 
                     s.occ(line, v);
@@ -99,13 +115,14 @@ void searcher(string file, string pattern, string patternFile, bool count) {
         } else {
             if (count)
                 s.count(texto, pattern, v);
-            else
-                vector<string> lines = split(texto, '\n');
+            else {
+                vector<string> lines = split(texto, ' ');
                 for (int i=0; i<lines.size(); i++){
                     string line = lines[i];
                     s.occ(line, pattern, v);
                 }
                 s.reset();
+            }
         }
         // s.search(texto, patternFile);
 
@@ -118,21 +135,27 @@ void searcher(string file, string pattern, string patternFile, bool count) {
         string pat = "";
         bool one = true;
         while ((one && patternFile.empty()) || (!patternFile.empty() && r->getLine(pat)) ) {
-            if (!patternFile.empty()) {
+            long c = 0; //contador
+            if (patternFile.empty()) {
                 pat = pattern;
-                end = false;
+                one = false;
             }
             for (int i=0; i<suffix.size(); i++) {
                 SuffixTree t = SuffixTree::from_string(suffix[i]);
                 if (!count && t.check_pattern(pat))
                     cout << t.s << endl;
-                // if ()
+                if (count) {
+                    c += t.check_pattern(pat, true);
+                }
+            }
+            if (count) {
+                cout << c << endl;
             }
         }
     
         
     }
-    */
+    
 
 
     //o metodo extract retorna uma string, essa deve ser deserializada 
