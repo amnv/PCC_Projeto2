@@ -16,6 +16,7 @@ FileReader::~FileReader() {
 
 bool FileReader::peek(char& c) {
     /** Retorna um char sem contar na leitura */
+    c = 0;
     if(!file.eof()) {
         c = file.peek();
         return true;
@@ -24,6 +25,7 @@ bool FileReader::peek(char& c) {
 }
 
 bool FileReader::getChar(char& c) {
+    c = 0;
     if (!file.eof()) {
         file.get(c);
         return true;

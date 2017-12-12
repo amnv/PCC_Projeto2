@@ -34,6 +34,7 @@ void indexer(string file, string indexType, string compressType) {
         while (r->getLine(line)) {
             all += line + "\n";
         }
+        // all = "A_ASA_DA_CASAdoBOI alskdflkasd flka sdklf a";
     }
     //FIM TEMPORARIO
 

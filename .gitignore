@@ -2,3 +2,10 @@ a.out
 *.gch
 .vscode
 *.idx*
+*[.]i
+*[.]s
+*[.]p
+*.text
+*.txt
+*.gz
+*.zip
