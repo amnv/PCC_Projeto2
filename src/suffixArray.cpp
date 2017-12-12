@@ -263,9 +263,31 @@ void SuffixArray::occ(string path, vector<int> suffixtab)
     }
 }
 
+
+string SuffixArray::to_string(vector<int> v)
+{
+   string saida = "";
+   stringstream result;
+   copy(v.begin(), v.end(), ostream_iterator<int>(result, " "));
+
+    saida = result.str().c_str();
+    return saida;
+}
+
+vector<int> SuffixArray::from_string(string s)
+{
+    stringstream iss(s);
+
+    int number;
+    vector<int> myNumbers;
+    while (iss >> number)
+        myNumbers.push_back(number);
+    return myNumbers;
+}
+
 void SuffixArray::debug()
 {
-    string t = "english.txt";
+    string t = "mississipi$";
 //    vector<vector<int> > p = this->build_P(t);
 
     //teste suffixArray
@@ -278,12 +300,22 @@ void SuffixArray::debug()
 
     //teste suffix tab
     cout << "teste suffix tab" << endl;
-    this->buildSuffixTab(t);
+    vector<int> v = this->buildSuffixTab(t);
     for (int i = 0; i < this->suftab.size(); i++)
     {
         cout << this->suftab[i] << endl;
     }
 
+    //testando to_string
+    cout << "testando to_string" << endl;
+    string saida = this->to_string(v);
+    cout << saida << endl;
+
+    //testando from_string
+    cout << "testando from_string" << endl;
+    cout << this->from_string(saida).size() << endl;
+
+    /*
     // teste achar occ 
     cout << "teste achar occ" << endl;
     string pat = "ba";
@@ -291,4 +323,5 @@ void SuffixArray::debug()
     cout << "mostrando ocorrencias" << endl;
     for (int i = 0; i < occ.size(); i++)
         cout << occ[i] << endl;
+    */
 }

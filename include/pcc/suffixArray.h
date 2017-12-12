@@ -38,6 +38,9 @@ public:
     void fillLlcpRlcp(string txt, vector<int> sarr, int l, int r, vector<int> Llcp, vector<int> Rlcp, vector<int> p);
     int lcp(vector<string> x, vector<string> y);
     vector<Tripla>* rsort(vector<Tripla> *v, int n);
+
+    string to_string(vector<int> v);
+    vector<int> from_string(string s);
 };
 
 #endif
