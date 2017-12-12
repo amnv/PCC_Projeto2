@@ -251,7 +251,7 @@ bool SuffixArray::occ(string text, string pattern, vector<int> suffixTab)
             cout << text << endl;
             return true;
         }
-        return false;
+        return false; 
     // }
 }
 
