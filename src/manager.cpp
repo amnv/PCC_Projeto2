@@ -64,12 +64,13 @@ void indexer(string file, string indexType, string compressType) {
             //cout << "line " << line << endl;
             // std::cout << "Building sufix tree n=" << i << " lsize=" << line.size() << std::endl;
             SuffixTree s;
-            s.build_sufix_tree(line);
-            //v.push_back(s);
-            // std::cout << "Converting sufix tree to string" << std::endl;
-            all += s.to_string() + (char) 0;
-            //v.erase(v.begin());
-            i++;
+            if(s.build_sufix_tree(line)){
+                //v.push_back(s);
+                // std::cout << "Converting sufix tree to string" << std::endl;
+                all += s.to_string() + (char) 0;
+                //v.erase(v.begin());
+                i++;
+            }
         }
         //while(v.size() > 0) {
         //    all += v[0].to_string() + (char) 0;
@@ -152,6 +153,9 @@ void searcher(string file, string pattern, string patternFile, bool count) {
                 one = false;
             }
             for (int i=0; i<suffix.size(); i++) {
+                if(suffix[i].size() == 0 || suffix[i] == "\n")
+                    continue;
+                
                 SuffixTree t = SuffixTree::from_string(suffix[i]);
                 if (!count && t.check_pattern(pat) == 1)
                     cout << t.s << endl;
