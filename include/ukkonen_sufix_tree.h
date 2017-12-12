@@ -110,7 +110,8 @@ public:
         len = len == -1 ? text.size() : len;
         len = len - root.l;
         std::cout << " len=" << len;
-        std::cout << " edge=" << text.substr(root.l, root.len());
+        std::cout << " text=" << text.substr(root.l, root.len());
+        std::cout << " p=" << root.p;
         // Nao faco ideia do que o slink eh
         // std::cout << " slink=";
         std::cout <<  "]" << std::endl;
@@ -128,7 +129,7 @@ public:
         s = text;// + '$';
 
         for(int i=0; i<s.size(); i++){
-            std::cout << "i=" << i << std::endl;
+            //std::cout << "i=" << i << " c=" << s[i];
             //cn eh o cara q eu to analisando
             //cd eh o index do filho
             int cn = 0, cd = 0;
@@ -146,8 +147,19 @@ public:
                     t[mid].chd[s[j]] = new_node(j, s.size()-1, mid);
                     t[mid].chd[t[cn][cd]] = cn;
                     t[cn].l += cd;
+
+                    std::map<char,int>::iterator it = t[t[cn].p].chd.begin();
+                    for (; it != t[t[cn].p].chd.end(); ++it )
+                        if (it->second == t[cn].id)
+                            break;
+                    
+                    if(it != t[t[cn].p].chd.end())
+                        t[t[cn].p].chd.erase(it);
+
                     t[cn].p = mid;
-                    t[t[mid].p].chd[t[mid][0]] = mid;
+                    t[t[mid].p].chd[s.substr(t[mid].l, t[mid].len())[0]] = mid;
+                    
+
                     break;
                 }
                 if(cd == t[cn].len()){
@@ -157,8 +169,8 @@ public:
                 cd++;
             }
 
-            print_cst(t[0], 0, s);
         }
+        print_cst(t[0], 0, s);
     };
 
     void check_pattern(std::string pat){
