@@ -86,7 +86,7 @@ public:
 
     SuffixTree(bool printTree = false){
         nodeid = 1;
-        t = std::vector<Node>(N*2, Node());
+        //t = std::vector<Node>(N*2, Node());
         print_tree = printTree;
         //t.push_back(Node());
     };
@@ -121,7 +121,11 @@ public:
         }
     };
 
-    void build_sufix_tree(std::string text){
+    bool build_sufix_tree(std::string text){
+        if(text.size() == 0 || text == "\n")
+            return false;
+
+        t = std::vector<Node>(text.size()*2, Node());
         // Adiciona um caractere que nao aparece na string em nenhum lugar (nao ta no
         // alfabeto) no final para garantir que cada sufixo vai ter sua propria folha
         // Isso garante que nenhum sufixo eh prefixo de outro sufixo
@@ -176,6 +180,8 @@ public:
 
         if(print_tree)
             print_cst(t[0], 0, s);
+
+        return true;
     };
 
     int check_pattern(std::string pat, bool count = false){
@@ -274,13 +280,13 @@ public:
     }
 
     std::string to_string(){
-        std::string treestr = std::to_string(nodeid) + "\n";
-        treestr += s + "\n";
+        std::string treestr = "i=" + std::to_string(nodeid) + "\n";
+        treestr += "s=" + s + "\n";
 
         for(int i=0; i<t.size(); i++){
             if(t[i].id == 0 && i!=0)
                 continue;
-            treestr += t[i].to_string() + "\n";
+            treestr += "n=" + t[i].to_string() + "\n";
         }
 
         return treestr;
@@ -289,16 +295,42 @@ public:
     static SuffixTree from_string(std::string treestr){
         std::vector<std::string> data = split(treestr, "\n");
         SuffixTree tree;
-        tree.nodeid = std::stoi(data[0]);
-        tree.s = data[1];
-        tree.t = std::vector<Node>(N*2, Node());
 
-        for(int i=2; i<data.size(); i++){
-            if(data[i] == "")
+        for(int i=0; i<data.size(); i++){
+            //std::cout << "i=\"" << i << "/" << data.size() << "\" Data[i]= \"" << data[i] << "\" Size:" << data[i].size() << std::endl;
+            if(data[i].size() == 0)
                 continue;
 
-            Node node = Node::from_string(data[i]);
-            tree.t[node.id] = node;    
+            //std::cout << "Extracting header" << std::endl;
+            //header
+            std::string datatype = data[i].substr(0, 2);
+            //std::cout << "header=" << datatype << std::endl;
+
+            //std::cout << "Extracting content" << std::endl;
+            //content
+            std::string datasubs = data[i].substr(2, data[i].size()-2);
+            //std::cout << "content=" << datasubs << std::endl;
+
+            if(datatype == "i="){
+                //std::cout << "  inserindo o id da tree" << std::endl;
+                tree.nodeid = std::stoi(datasubs);
+                //std::cout << "  done" << std::endl;
+            }else if(datatype == "s="){
+                //std::cout << "  inserindo a string da tree" << std::endl;
+                tree.s = datasubs;
+                if(tree.s.size() == 0)
+                    std::cout << "tree string is empty" << std::endl;
+                //std::cout << "  done" << std::endl;
+                //std::cout << "  criando vector de nodes da tree" << std::endl;
+                tree.t = std::vector<Node>(tree.s.size()*2, Node());
+                //std::cout << "  done" << std::endl;
+            }
+            else if(datatype == "n="){
+                Node node = Node::from_string(datasubs);
+                //std::cout << "  inserindo um node com id=" << node.id << " numa tree de size=" << tree.t.size() << std::endl;
+                tree.t[node.id] = node;
+                //std::cout << "  done" << std::endl;   
+            }
         }
 
         return tree;

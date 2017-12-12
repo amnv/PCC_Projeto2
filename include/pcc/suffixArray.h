@@ -28,13 +28,14 @@ private:
     int ini, fim;
 public:
     SuffixArray();
+    vector<Gambe> gambe(string text);
     vector<int> buildSuffixTab(string text);
     map<string, int> buildSuffixArray(string text);
     void count(string path, string pattern, vector<int> suffixtab);
     void count(string path, vector<int> suffixtab);
-    bool occ(vector<string> lines, string pattern, vector<int> suffixtab);
-    void occ(vector<string> lines, vector<int> suffixtab);
-
+    // bool occ(vector<string> lines, string pattern, vector<int> suffixtab);
+    bool occ(string text, string pattern, vector<int> suffixTab);
+    bool occ(string text, vector<int> suffixtab);
     int lp(string pattern, string text);
     int rp(string pattern, string text);
     vector<int> getSuffixTab();

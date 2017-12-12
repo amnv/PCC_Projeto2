@@ -5,7 +5,7 @@ a.out
 *[.]i
 *[.]s
 *[.]p
-*.text
-*.txt
+*.text*
+*.txt*
 *.gz
 *.zip
