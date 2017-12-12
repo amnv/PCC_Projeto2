@@ -15,11 +15,15 @@ class SuffixArray
 {
 private:
     vector<int> suftab;
+    string path_pattern;
 public:
     vector<int> buildSuffixTab(string text);
     map<string, int> buildSuffixArray(string text);
     void count(string path, string pattern, vector<int> suffixtab);
+    void count(string path, vector<int> suffixtab);
     void occ(string path, string pattern, vector<int> suffixtab);
+    void occ(string path, vector<int> suffixtab);
+
     int lp(string pattern, string text);
     int rp(string pattern, string text);
     vector<int> getSuffixTab();
@@ -27,6 +31,7 @@ public:
     void debug();
     vector<int> search(string text, string pattern);
 
+    void setPattern(string path);
     vector<int> search(string text, string pattern, vector<int> Llcp, vector<int> Rlcp);
     vector<vector<int> > build_P(string text);
     vector<int> sarr_from_P(vector<int> p);

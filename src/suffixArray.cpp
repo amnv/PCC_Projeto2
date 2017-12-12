@@ -227,6 +227,16 @@ void SuffixArray::count(string path, string pattern, vector<int> suffixTab)
     delete r;
 }
 
+void SuffixArray::count(string path, vector<int> suffixtab)
+{
+    string pattern;
+    FileReader file(path);
+    while(file.getLine(pattern))
+    { 
+        this->count(path, pattern, suffixtab);
+    }   
+}
+
 void SuffixArray::occ(string path, string pattern, vector<int> suffixTab)
 {
     string text;
@@ -240,6 +250,16 @@ void SuffixArray::occ(string path, string pattern, vector<int> suffixTab)
         {
             cout << text << endl;
         }
+    }
+}
+
+void SuffixArray::occ(string path, vector<int> suffixtab)
+{
+    string pattern;
+    FileReader file(path);
+    while(file.getLine(pattern))
+    { 
+        this->occ(path, pattern, suffixtab);
     }
 }
 
