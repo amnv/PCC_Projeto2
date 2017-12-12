@@ -14,13 +14,7 @@ void Compress::create(string file, string& text, string alg) {
     /** Comprime um texto e o salva em um arquivo */
     FileWriter* w = new FileWriter(file, false);
     //
-    // FileReader* r = new FileReader("/usr/include/sqlite3.h");
-    // string line;
-    // text = "";
-    // while (r->getLine(line)) {
-    //     text += line + "\n";
-    // }
-    //
+
     auto lwcase = [](char& c) {
         c = tolower(c);
     };

@@ -2,10 +2,11 @@
 #include <iostream>
 #include <pcc/compress.h>
 #include <regex>
+#include <pcc/filereader.h>
 
 using namespace std;
 
-auto exp = [](string ex, string& str) {
+auto reg = [](string ex, string& str) {
     regex rgx(ex);
     smatch match;
     if (regex_search(str, match, rgx)) {
@@ -22,12 +23,23 @@ void indexer(string file, string indexType, string compressType) {
     } else { //ja passou pela verificacao no main (array | suffix)
         //chama o suffix tree
     }
-
-    string all = "A_ASA_DA_CASA";
+    
+    string all = "";
+    
+    //TEMPORARIO PARA TESTAR COMPRESSAO
+    {
+        FileReader* r = new FileReader(file);
+        string line;
+        all = "";
+        while (r->getLine(line)) {
+            all += line + "\n";
+        }
+    }
+    //FIM TEMPORARIO
 
     
     //saida do algoritmo eh entao toda serializada e eh passada para a string all
-    exp("(.*?)[.][a-zA-Z0-9]*$", file);
+    reg("(.*?)[.][a-zA-Z0-9]*$", file);
     Compress::create(file + ".idx", all, compressType);
 }
 
