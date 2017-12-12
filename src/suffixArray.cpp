@@ -1,5 +1,7 @@
-#include "../include/pcc/suffixArray.h"
 #include <bits/stdc++.h>
+
+#include "../include/pcc/suffixArray.h"
+#include "../include/pcc/filereader.h"
 
 using namespace std;
 
@@ -211,9 +213,39 @@ vector<vector<int> > SuffixArray::build_P(string text)
     return p;
 }
 
+void SuffixArray::count(string path, string pattern, vector<int> suffixTab)
+{
+    FileReader* r = new FileReader(path);
+    string line;
+    string text;
+    while (r->getLine(line))
+    {
+        text += line;
+    }
+    this->suftab = suffixTab;
+    cout << this->search(text, pattern).size() << endl;
+    delete r;
+}
+
+void SuffixArray::occ(string path, string pattern, vector<int> suffixTab)
+{
+    string text;
+    FileReader file(path);
+    while(file.getLine(text))
+    {    
+        this->suftab = suffixTab;
+        vector<int> v = this->search(text, pattern);
+
+        if (!v.empty())
+        {
+            cout << text << endl;
+        }
+    }
+}
+
 void SuffixArray::debug()
 {
-    string t = "bananabana$";
+    string t = "english.txt";
 //    vector<vector<int> > p = this->build_P(t);
 
     //teste suffixArray

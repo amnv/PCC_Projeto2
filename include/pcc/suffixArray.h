@@ -18,8 +18,8 @@ private:
 public:
     vector<int> buildSuffixTab(string text);
     map<string, int> buildSuffixArray(string text);
-    void count(string text, string pattern);
-    void occ(string text, string pattern);
+    void count(string path, string pattern, vector<int> suffixtab);
+    void occ(string path, string pattern, vector<int> suffixtab);
     int lp(string pattern, string text);
     int rp(string pattern, string text);
     vector<int> getSuffixTab();
