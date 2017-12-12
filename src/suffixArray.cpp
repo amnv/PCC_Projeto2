@@ -85,13 +85,13 @@ vector<Gambe> SuffixArray::gambe(string text)
 vector<int> SuffixArray::search(string text, string pattern)
 {
   vector<int> sa;
-  cout << " asdsda" << endl;
+//   cout << " asdsda" << endl;
     int lp = this->lp(pattern, text);
-   cout << "saiu lp" << endl;
+//    cout << "saiu lp" << endl;
     int rp = this->rp(pattern, text);
     
     //cout << "saiu rp" << endl;
-    cout << "lp " << lp << " lr " << rp << endl;
+    // cout << "lp " << lp << " lr " << rp << endl;
     if (lp > rp) return sa;
     
     for(int i = lp; i <= rp; i++)
@@ -103,12 +103,12 @@ vector<int> SuffixArray::search(string text, string pattern)
 vector<int> SuffixArray::search(string text, string pattern, vector<int> Llcp, vector<int> Rlcp)
 {
     vector<int> sa;
-    cout << "antes lp " << endl;
+    // cout << "antes lp " << endl;
     int lp = this->lp(pattern, text);
-    cout << "saiu lp" << endl;
+    // cout << "saiu lp" << endl;
     int rp = this->rp(pattern, text);
-    cout << "saiu rp" << endl;
-    cout << "321" << endl;
+    // cout << "saiu rp" << endl;
+    // cout << "321" << endl;
     if (lp > rp) return sa;
     
     for(int i = lp; i <= rp; i++)
@@ -125,7 +125,7 @@ int SuffixArray::lexcmp(string a, string b, int m)
     if (a < b) return -1;
     if (b < a) return 1;
     **/
-    cout << "entrou na lex" << endl;
+    // cout << "entrou na lex" << endl;
 
     return a.compare(0,m, b, 0, m);
 }
@@ -135,16 +135,16 @@ int SuffixArray::lp(string pattern, string text)
     int n = text.size();
     int m = pattern.size();
     int r = n -1;
-    cout << pattern << " 12312 " << this->suftab[0] << endl;
+    // cout << pattern << " 12312 " << this->suftab[0] << endl;
     
-    cout << text << " 123 " << this->suftab[n-1] << endl;
-    cout << " aspodk " << text.substr(this->suftab[0]) << endl;
+    // cout << text << " 123 " << this->suftab[n-1] << endl;
+    // cout << " aspodk " << text.substr(this->suftab[0]) << endl;
     if (this->lexcmp(pattern, text.substr(this->suftab[0]), m) <= 0)
         return 0;
-    cout << "opa 1" << endl;
+    // cout << "opa 1" << endl;
     if (this->lexcmp(text.substr(this->suftab[n-1]), pattern, m) < 0)
         return n;
-    cout << "$12312" << endl;
+    // cout << "$12312" << endl;
     int l = 0;
 
     while ((r - l) > 1)
@@ -154,7 +154,7 @@ int SuffixArray::lp(string pattern, string text)
             r = h;
         else l = h;
     }
-    cout << "912312" << endl;
+    // cout << "912312" << endl;
     
     return r;
 }
@@ -298,9 +298,9 @@ bool SuffixArray::occ(string text, string pattern, vector<int> suffixTab)
     vector<Gambe> gambe = this->gambe(text);
 
         this->suftab = suffixTab;
-        cout << "antes search" << text << " " << pattern << endl;
+        // cout << "antes search" << text << " " << pattern << endl;
         vector<int> v = this->search(text, pattern);
-        cout << "apos" << endl;
+        // cout << "apos" << endl;
         for (int i = 0; i < v.size(); i++)
         {
             cout << this->findLine(gambe, v[i]) << endl;

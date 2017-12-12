@@ -55,6 +55,8 @@ void indexer(string file, string indexType, string compressType) {
         all = s.to_string(array);
         all += "IIiseparadoriII";
         all += texto;
+        // cout << "text " << texto << endl;
+        // cout << all << endl;
 
     } else { //ja passou pela verificacao no main (array | suffix)
         //chama o suffix tree
@@ -105,9 +107,16 @@ void searcher(string file, string pattern, string patternFile, bool count) {
     if (suffix == "a") {
         string array = uncompress, texto = uncompress;
         reg("(.*)IIiseparadoriII", array);
-        reg("IIiseparadoriII(.*)", texto);
+        string opa = "IIiseparadoriII";
+        // for (int i=0; i< uncompress; i++ ){
+            int posi = uncompress.find(opa);
+            texto = uncompress.substr(posi + opa.size());
+        // }
+        // reg("IIiseparadoriII(.*\\s.*)", texto);
+        // cout << "text " << texto << endl;
         SuffixArray s;
         vector<int> v = s.from_string(array);
+
 
         if (!patternFile.empty()) { //passou
             s.setPattern(patternFile);
