@@ -76,7 +76,7 @@ public:
     }
 };
 
-class SufixTree{
+class SuffixTree{
 public:
     static const int N = 112345;
     int nodeid;
@@ -84,14 +84,14 @@ public:
     std::vector<Node> t;
     bool print_tree;
 
-    SufixTree(bool printTree = false){
+    SuffixTree(bool printTree = false){
         nodeid = 1;
         t = std::vector<Node>(N*2, Node());
         print_tree = printTree;
         //t.push_back(Node());
     };
     
-    ~SufixTree(){};
+    ~SuffixTree(){};
 
     int new_node(int L, int R, int P){
         t[nodeid] = Node(nodeid, L, R, P);
@@ -286,9 +286,9 @@ public:
         return treestr;
     }
 
-    static SufixTree from_string(std::string treestr){
+    static SuffixTree from_string(std::string treestr){
         std::vector<std::string> data = split(treestr, "\n");
-        SufixTree tree;
+        SuffixTree tree;
         tree.nodeid = std::stoi(data[0]);
         tree.s = data[1];
         tree.t = std::vector<Node>(N*2, Node());

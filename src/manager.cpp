@@ -3,6 +3,9 @@
 #include <pcc/compress.h>
 #include <regex>
 #include <pcc/filereader.h>
+#include <vector>
+#include <pcc/suffixArray.h>
+#include <ukkonen_sufix_tree.h>
 
 using namespace std;
 
@@ -18,13 +21,38 @@ auto reg = [](string ex, string& str) {
 
 void indexer(string file, string indexType, string compressType) {
 
+    vector<SuffixTree> v;
+    string all = "";/*
+    FileReader* r = new FileReader(file);
     if (indexType == "array") {
         //chama o array suffix
+        SuffixArray s;
+        string line;
+        string texto;
+        while (r->getLine(line)) {
+            texto += line;
+        }
+        vector<int> array = s.buildSuffixTab(texto);
+        all = s.to_string(array);
+        all += "IIiseparadoriII";
+        all += texto;
+
     } else { //ja passou pela verificacao no main (array | suffix)
         //chama o suffix tree
+
+        string line;
+        while (r->getLine(line)) {
+            SuffixTree s();
+            s.build_sufix_tree(line);
+            v.push_back(s);
+        }
+        
+        for (int i=0; i<v.size(); i++) {
+            all += v[i].to_string() + (char) 0;
+        }
+
     }
-    
-    string all = "";
+    */
     
     //TEMPORARIO PARA TESTAR COMPRESSAO
     {
@@ -34,20 +62,79 @@ void indexer(string file, string indexType, string compressType) {
         while (r->getLine(line)) {
             all += line + "\n";
         }
-        // all = "A_ASA_DA_CASAdoBOI alskdflkasd flka sdklf a";
     }
     //FIM TEMPORARIO
 
     
     //saida do algoritmo eh entao toda serializada e eh passada para a string all
     reg("(.*?)[.][a-zA-Z0-9]*$", file);
-    Compress::create(file + ".idx", all, compressType);
+    Compress::create(file + ".idx", all, indexType, compressType);
 }
 
-void searcher(string file, string pattern, string patterFile, bool count) {
+void searcher(string file, string pattern, string patternFile, bool count) {
     // cout << "Modo de busca " << endl;
-    string uncompress = Compress::extract(file);
-    cout << uncompress << endl;
+    string suffix = "";
+    string uncompress = Compress::extract(file, suffix);
+    cout << uncompress << endl; /*
+    if (suffix == "array") {
+        string array = uncompress, texto = uncompress;
+        reg("(.*)IIiseparadoriII", array);
+        reg("IIiseparadoriII(.*)", texto);
+        SuffixArray s;
+        vector<int> v = s.from_string(array);
+        
+
+        if (!patternFile.empty()) { //passou
+            s.setPattern(patternFile);
+            if (count)
+                s.count(texto, v);
+            else {
+                vector<string> lines = split(texto, '\n');
+                for (int i=0; i<lines.size(); i++){
+                    string line = lines[i]; 
+                    s.occ(line, v);
+                }
+                s.reset();
+            }
+        } else {
+            if (count)
+                s.count(texto, pattern, v);
+            else
+                vector<string> lines = split(texto, '\n');
+                for (int i=0; i<lines.size(); i++){
+                    string line = lines[i];
+                    s.occ(line, pattern, v);
+                }
+                s.reset();
+        }
+        // s.search(texto, patternFile);
+
+    } else {
+        vector<string> suffix = split(uncompress, (char) 0);
+        FileReader* r;
+        if (!patternFile.empty()) {
+            r = new FileReader(patternFile);
+        }
+        string pat = "";
+        bool one = true;
+        while ((one && patternFile.empty()) || (!patternFile.empty() && r->getLine(pat)) ) {
+            if (!patternFile.empty()) {
+                pat = pattern;
+                end = false;
+            }
+            for (int i=0; i<suffix.size(); i++) {
+                SuffixTree t = SuffixTree::from_string(suffix[i]);
+                if (!count && t.check_pattern(pat))
+                    cout << t.s << endl;
+                // if ()
+            }
+        }
+    
+        
+    }
+    */
+
+
     //o metodo extract retorna uma string, essa deve ser deserializada 
     // e entao pode ser usada como se não houvesse compressão
 
