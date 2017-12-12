@@ -173,7 +173,7 @@ public:
         print_cst(t[0], 0, s);
     };
 
-    void check_pattern(std::string pat){
+    bool check_pattern(std::string pat){
         int cn = 0;
         for(int i=0; i<pat.size(); i++){
             bool found = false;
@@ -183,11 +183,7 @@ public:
 
                 std::string chdString = s.substr(chd.l, len);
                 std::string patString = pat.substr(i, len);
-                // if(chdString.find("$") != std::string::npos){
-                //     patString += "$";
-                // }
 
-                //std::cout << "CHD SUBS: " <<  chdString << ", PAT SUBS: " << patString << std::endl;
                 if(chdString == patString){
                     cn = iter->second;
                     i += len - 1;
@@ -197,13 +193,14 @@ public:
             }
 
             if(!found){
-                std::cout << "pattern not found" << std::endl;
-                return;
+                //std::cout << "pattern not found" << std::endl;
+                return false;
             }
 
         }
 
-        std::cout << "pattern found" << std::endl;
+        //std::cout << "pattern found" << std::endl;
+        return true;
     };
 
     std::string to_string(){
