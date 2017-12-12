@@ -46,9 +46,6 @@ public:
     int len(){
         return r - l + 1;
     }
-    char operator[](int i){
-        return s[l+i];
-    }
 
     std::string to_string(){
         std::string nodeStr = "";
@@ -85,10 +82,12 @@ public:
     int nodeid;
     std::string s;
     std::vector<Node> t;
+    bool print_tree;
 
-    SufixTree(){
+    SufixTree(bool printTree = false){
         nodeid = 1;
         t = std::vector<Node>(N*2, Node());
+        print_tree = printTree;
         //t.push_back(Node());
     };
     
@@ -129,7 +128,7 @@ public:
         s = text;// + '$';
 
         for(int i=0; i<s.size(); i++){
-            //std::cout << "i=" << i << " c=" << s[i];
+            //std::cout << "i=" << i << " c=" << s[i] << std::endl;
             //cn eh o cara q eu to analisando
             //cd eh o index do caractere atual
             int cn = 0, cd = 0;
@@ -137,15 +136,18 @@ public:
             for(int j=i; j<s.size(); j++){
                 // Se eu to em um vertice e nao tenho esse filho
                 if(cd == t[cn].len() && !t[cn].chd.count(s[j])){
+                    //std::cout << "i=" << i << " c=" << s[i] << " cn=" << cn << " cd=" << cd << " if1" << std::endl;
+
                     t[cn].chd[s[j]] = new_node(j, s.size()-1, cn);
                     break;
                 // Se eu to no meio e uma aresta (eu nao analisei todos os caracteres dessa
                 // aresta) e o caractere atual eh diferente do cara q eu to tentando adicionar (s[j])
                 // entao eu quebro a aresta em duas (crio mid)
-                }else if(cd < t[cn].len() && t[cn][cd] != s[j]){
+                }else if(cd < t[cn].len() && s.substr(t[cn].l+cd, 1)[0] != s[j]){
+                    //std::cout << "i=" << i << " c=" << s[i] << " cn=" << cn << " cd=" << cd << " if2" << std::endl;
                     int mid = new_node(t[cn].l, t[cn].l + cd - 1, t[cn].p);
                     t[mid].chd[s[j]] = new_node(j, s.size()-1, mid);
-                    t[mid].chd[t[cn][cd]] = cn;
+                    t[mid].chd[s.substr(t[cn].l+cd, 1)[0]] = cn;
                     t[cn].l += cd;
 
                     std::map<char,int>::iterator it = t[t[cn].p].chd.begin();
@@ -163,6 +165,7 @@ public:
                     break;
                 }
                 if(cd == t[cn].len()){
+                    //std::cout << "i=" << i << " c=" << s[i] << " cn=" << cn << " cd=" << cd << " if3" << std::endl;
                     cn = t[cn].chd[s[j]];
                     cd = 0;
                 }
@@ -170,7 +173,9 @@ public:
             }
 
         }
-        print_cst(t[0], 0, s);
+
+        if(print_tree)
+            print_cst(t[0], 0, s);
     };
 
     int check_pattern(std::string pat, bool count = false){
@@ -244,9 +249,11 @@ public:
      
     int doTraversal(std::string str, Node n, int idx)
     {
+        //std::cout << n.id << ", " << idx << ", " << n.len() << std::endl;
         int res = -1;
         if(n.r != -1)
         {
+            //std::cout << "traverse " << n.id << ", " << idx << ", " << n.len() << std::endl;
             res = traverseEdge(str, idx, n.l, n.r);
             if(res == -1)
                 return -1;
@@ -289,7 +296,7 @@ public:
         for(int i=2; i<data.size(); i++){
             if(data[i] == "")
                 continue;
-            //std::cout << "Creating Node with: " << data[i] << std::endl;
+
             Node node = Node::from_string(data[i]);
             tree.t[node.id] = node;    
         }
