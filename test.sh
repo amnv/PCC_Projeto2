@@ -3,12 +3,17 @@ tool="$local/bin/ipmt"
 file="$1"
 time='/usr/bin/time --quiet -f "%E"'
 
-if [ $1 = "clean" ]; then
+if [ "$1" = "clean" ]; then
     rm -f {*.i,*.p,*.s}
     exit 0
 fi
 
-if [ ! -f $file ]; then
+if [ ! -f '/usr/bin/time' ]; then
+    echo 'Instale o GNU Time'
+    exit 1
+fi
+
+if [ ! -f "$file" ]; then
     echo 'Falta arquivo válido'
     exit 1
 fi
