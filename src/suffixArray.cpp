@@ -287,7 +287,7 @@ vector<int> SuffixArray::from_string(string s)
 
 void SuffixArray::debug()
 {
-    string t = "mississipi$";
+    string t = "thesharkwaskilledduringthenightIthasnoideaofwhatwasgoi123 2157$#@ngonpoorlittleshark@#$.$";
 //    vector<vector<int> > p = this->build_P(t);
 
     //teste suffixArray
@@ -315,13 +315,18 @@ void SuffixArray::debug()
     cout << "testando from_string" << endl;
     cout << this->from_string(saida).size() << endl;
 
-    /*
+    
     // teste achar occ 
     cout << "teste achar occ" << endl;
-    string pat = "ba";
+    string pat = "157$#@";
     vector<int> occ = this->search(t, pat);
     cout << "mostrando ocorrencias" << endl;
     for (int i = 0; i < occ.size(); i++)
         cout << occ[i] << endl;
-    */
+    
+}
+
+void SuffixArray::setPattern(string path)
+{
+    this->path_pattern = path;
 }
