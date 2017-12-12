@@ -54,7 +54,7 @@ vector<int> SuffixArray::buildSuffixTab(string text)
     return this->suftab;
 }
 
-Gambe Gambe::make_gambe(int a,int b, string c);
+Gambe Gambe::make_gambe(int a,int b, string c)
 {
     Gambe g;g.ini=a; g.fim = b; g.line = c;
     return g;
@@ -63,7 +63,7 @@ Gambe Gambe::make_gambe(int a,int b, string c);
 vector<Gambe> SuffixArray::gambe(string text)
 {
     vector<Gambe> g;
-    vector<string> v = Manager.split(text, "\n");
+    vector<string> v = split(text, '\n');
     int ini = 0;
     int fim = 0;
     for (int i = 0; i < v.size(); i++)
@@ -308,13 +308,13 @@ bool SuffixArray::occ(string text, string pattern, vector<int> suffixTab)
         return false; 
 }
 
-void SuffixArray::occ(vector<string> lines, vector<int> suffixtab)
+bool SuffixArray::occ(string text, vector<int> suffixtab)
 {
     string pattern;
     FileReader file(this->path_pattern);
     while(file.getLine(pattern))
     { 
-        this->occ(lines, pattern, suffixtab);
+        this->occ(text, pattern, suffixtab);
     }
 }
 

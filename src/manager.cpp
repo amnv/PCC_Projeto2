@@ -59,12 +59,14 @@ void indexer(string file, string indexType, string compressType) {
     } else { //ja passou pela verificacao no main (array | suffix)
         //chama o suffix tree
         string line;
+        cout << "linha aqui" << endl;
         while (r->getLine(line)) {
+            cout << "line " << line << endl;
             SuffixTree s;
             s.build_sufix_tree(line);
             v.push_back(s);
         }
-        
+        cout << "linha fora" << endl;
         for (int i=0; i<v.size(); i++) {
             all += v[i].to_string() + (char) 0;
         }
@@ -107,8 +109,8 @@ void searcher(string file, string pattern, string patternFile, bool count) {
             if (count)
                 s.count(texto, v);
             else {
-                vector<string> lines = split(texto, '\n');
-                s.occ(lines, v);
+                // vector<string> lines = split(texto, '\n');
+                s.occ(texto, v);
                 s.reset();
             }
         } else {
@@ -116,12 +118,12 @@ void searcher(string file, string pattern, string patternFile, bool count) {
                 s.count(texto, pattern, v);
             else {
                 // cout << "here '" << texto << "'" << endl;
-                vector<string> lines = split(texto, '\n');
+                // vector<string> lines = split(texto, '\n');
                 // cout << "opa" << endl;
                 // for (int i=0; i<lines.size(); i++){
                 //     string line = lines[i];
                 //     cout << "123" << endl;
-                s.occ(lines, pattern, v);
+                s.occ(texto, pattern, v);
                     // cout << "line " << line << endl;
                 // }
                 // cout << "opa2" << endl;
