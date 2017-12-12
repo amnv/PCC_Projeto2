@@ -131,7 +131,7 @@ public:
         for(int i=0; i<s.size(); i++){
             //std::cout << "i=" << i << " c=" << s[i];
             //cn eh o cara q eu to analisando
-            //cd eh o index do filho
+            //cd eh o index do caractere atual
             int cn = 0, cd = 0;
 
             for(int j=i; j<s.size(); j++){
@@ -173,7 +173,11 @@ public:
         print_cst(t[0], 0, s);
     };
 
-    bool check_pattern(std::string pat){
+    int check_pattern(std::string pat, bool count = false){
+        if(count){
+            return doTraversal(pat, t[0], 0);
+        }
+
         int cn = 0;
         for(int i=0; i<pat.size(); i++){
             bool found = false;
@@ -194,14 +198,73 @@ public:
 
             if(!found){
                 //std::cout << "pattern not found" << std::endl;
-                return false;
+                return -1;
             }
 
         }
 
         //std::cout << "pattern found" << std::endl;
-        return true;
+        return 1;
     };
+
+    int traverseEdge(std::string str, int idx, int start, int end)
+    {
+        int k = 0;
+        //Traverse the edge with character by character matching
+        for(k=start; k<=end && idx < str.size(); k++, idx++)
+        {
+            if(s[k] != str[idx])
+                return -1;  // mo match
+        }
+        if(idx == str.size())
+            return 1;  // match
+        return 0;  // more characters yet to match
+    }
+     
+    int doTraversalToCountLeaf(Node n)
+    {
+        // se eh uma folha
+        if(n.chd.size() == 0)
+        {
+            return 1;
+        }
+        int count = 0;
+        int i = 0;
+        for(std::map<char,int>::iterator iter = n.chd.begin(); iter != n.chd.end(); iter++)
+        {
+            count += doTraversalToCountLeaf(t[iter->second]);   
+        }
+        return count;
+    }
+     
+    int countLeaf(Node n)
+    {
+        return doTraversalToCountLeaf(n);
+    }
+     
+    int doTraversal(std::string str, Node n, int idx)
+    {
+        int res = -1;
+        if(n.r != -1)
+        {
+            res = traverseEdge(str, idx, n.l, n.r);
+            if(res == -1)
+                return -1;
+            if(res == 1)
+            {
+                if(n.chd.size() == 0)
+                    return 1;
+                else
+                    return countLeaf(n);
+            }
+        }
+        idx = idx + n.len();
+
+        if(n.chd.count(str[idx]))
+            return doTraversal(str, t[n.chd[str[idx]]], idx);
+        else
+            return -1;
+    }
 
     std::string to_string(){
         std::string treestr = std::to_string(nodeid) + "\n";
