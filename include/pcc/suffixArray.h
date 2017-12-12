@@ -16,7 +16,9 @@ class SuffixArray
 private:
     vector<int> suftab;
     string path_pattern;
+    int ini, fim;
 public:
+    SuffixArray();
     vector<int> buildSuffixTab(string text);
     map<string, int> buildSuffixArray(string text);
     void count(string path, string pattern, vector<int> suffixtab);
@@ -41,6 +43,7 @@ public:
 
     string to_string(vector<int> v);
     vector<int> from_string(string s);
+    void reset();
 };
 
 #endif
